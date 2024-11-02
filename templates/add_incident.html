@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Incident</title>
+</head>
+<body>
+    <h2>Add New Incident</h2>
+
+    <form action="/new-incident" method="POST">
+        <label for="type_of_calamity">Type of Calamity:</label>
+        <input type="text" id="type_of_calamity" name="type_of_calamity" required>
+        <br><br>
+
+        <label for="date">Date and Time:</label>
+        <input type="datetime-local" id="date" name="date" required>
+        <br><br>
+
+        <label for="place">Location:</label>
+        <input type="text" id="place" name="place" required>
+        <br><br>
+
+        <label for="description">Description:</label>
+        <textarea id="description" name="description" rows="4" required></textarea>
+        <br><br>
+
+        <label for="severity">Severity:</label>
+        <input type="text" id="severity" name="severity" required>
+        <br><br>
+
+        <label for="status">Status:</label>
+        <input type="text" id="status" name="status" required>
+        <br><br>
+
+        <label for="active">Active (1 for Yes, 0 for No):</label>
+        <input type="number" id="active" name="active" min="0" max="1" required>
+        <br><br>
+
+        <label for="reqd_volunteers">Required Volunteers:</label>
+        <input type="number" id="reqd_volunteers" name="reqd_volunteers" required>
+        <br><br>
+
+        <label for="monitoring_bureau">Monitoring Bureau:</label>
+        <input type="text" id="monitoring_bureau" name="monitoring_bureau" required>
+        <br><br>
+
+        <label for="reqd_funds">Required Funds:</label>
+        <input type="number" id="reqd_funds" name="reqd_funds" required>
+        <br><br>
+
+        <label for="affected_pop">Affected Population:</label>
+        <input type="number" id="affected_pop" name="affected_pop" required>
+        <br><br>
+
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>
