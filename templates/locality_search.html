@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Locality Search</title>
+</head>
+<body>
+    <h2>Search for Locality</h2>
+    
+    <form method="POST" action="/locality-search">
+        <label for="locality_name">Enter Locality Name:</label>
+        <input type="text" id="locality_name" name="locality_name" required>
+        <button type="submit">Enter</button>
+    </form>
+
+    <div>
+        {% if locality_info %}
+            <h3>Incidents:</h3>
+            {% for locality in locality_info %}
+            <div style="border: 1px solid black; padding: 10px; margin-bottom: 10px;">
+                <p><strong>ID:</strong> {{ locality[0] }}</p>
+                <p><strong>DID:</strong> {{ locality[1] }}</p>
+                <p><strong>LID:</strong> {{ locality[2] }}</p>
+                <p><strong>Date:</strong> {{ locality[3] }}</p>
+                <p><strong>Description:</strong> {{ locality[4] }}</p>
+                <p><strong>Severity:</strong> {{ locality[5] }}</p>
+                <p><strong>Status:</strong> {{ locality[6] }}</p>
+                <p><strong>Active:</strong> {{ locality[7] }}</p>
+                <p><strong>Monitoring Bureau:</strong> {{ locality[8] }}</p>
+                <p><strong>Required Funds:</strong> {{ locality[9] }}</p>
+                <p><strong>Affected Population:</strong> {{ locality[10] }}</p>
+                <p><strong>Required Volunteers:</strong> {{ locality[11] }}</p>
+            </div>
+            {% endfor %}
+        {% elif not_found_message %}
+            <p>{{ not_found_message }}</p>
+        {% endif %}
+    </div>
+</body>
+</html>

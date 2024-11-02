@@ -1,21 +1,21 @@
 DROP TABLE IF EXISTS Disaster, Locality, Funding_Source, Essential, Organization, Volunteer,
 Shelter, Emergency_Service, Incident, Incident_Funding, Incident_Resource_Allocation, Incident_Volunteer_Allotment ;
 
-CREATE TABLE "Disaster" (
+CREATE TABLE "disaster" (
   "id" integer PRIMARY KEY,
   "name" text,
   "description" text,
   "protocol" text
 );
 
-CREATE TABLE "Locality" (
+CREATE TABLE "locality" (
   "id" integer PRIMARY KEY,
   "name" text,
   "geographical_size" text,
   "development_level" text
 );
 
-CREATE TABLE "Funding_Source" (
+CREATE TABLE "funding_source" (
   "id" integer PRIMARY KEY,
   "name" text,
   "contract_terms" text,
@@ -25,14 +25,14 @@ CREATE TABLE "Funding_Source" (
   "type_of_organization" text
 );
 
-CREATE TABLE "Essential" (
+CREATE TABLE "essential" (
   "id" integer PRIMARY KEY,
   "name" text,
   "price_per_unit" integer,
   "qty_in_stock" integer
 );
 
-CREATE TABLE "Organization" (
+CREATE TABLE "organization" (
   "id" integer PRIMARY KEY,
   "name" text,
   "type_of_organization" text,
@@ -40,16 +40,15 @@ CREATE TABLE "Organization" (
   "reachability" text
 );
 
-CREATE TABLE "Volunteer" (
+CREATE TABLE "volunteer" (
   "id" integer PRIMARY KEY,
   "name" text,
   "contact" text,
   "address" text,
-  "age" integer,
   "oid" integer
 );
 
-CREATE TABLE "Shelter" (
+CREATE TABLE "shelter" (
   "id" integer PRIMARY KEY,
   "lid" integer,
   "name" text,
@@ -59,7 +58,7 @@ CREATE TABLE "Shelter" (
   "current_capacity" integer
 );
 
-CREATE TABLE "Emergency_Service" (
+CREATE TABLE "emergency_Service" (
   "id" integer PRIMARY KEY,
   "lid" integer,
   "name" text,
@@ -68,10 +67,12 @@ CREATE TABLE "Emergency_Service" (
   "speed_of_response" text
 );
 
-CREATE TABLE "Incident" (
+CREATE TABLE "incident" (
   "id" integer PRIMARY KEY,
   "did" integer,
   "lid" integer,
+  "date_time" timestamp,
+  "description" text,
   "severity" text,
   "status" text,
   "active" integer,
@@ -81,39 +82,39 @@ CREATE TABLE "Incident" (
   "reqd_volunteers" integer
 );
 
-CREATE TABLE "Incident_Funding" (
+CREATE TABLE "incident_funding" (
   "iid" integer,
   "fid" integer
 );
 
-CREATE TABLE "Incident_Resource_Allocation" (
+CREATE TABLE "incident_resource_allocation" (
   "iid" integer,
   "eid" integer
 );
 
-CREATE TABLE "Incident_Volunteer_Allotment" (
+CREATE TABLE "incident_volunteer_allotment" (
   "iid" integer,
   "vid" integer
 );
 
-ALTER TABLE "Volunteer" ADD FOREIGN KEY ("oid") REFERENCES "Organization" ("id");
+ALTER TABLE "volunteer" ADD FOREIGN KEY ("oid") REFERENCES "organization" ("id");
 
-ALTER TABLE "Shelter" ADD FOREIGN KEY ("lid") REFERENCES "Locality" ("id");
+ALTER TABLE "shelter" ADD FOREIGN KEY ("lid") REFERENCES "locality" ("id");
 
-ALTER TABLE "Emergency_Service" ADD FOREIGN KEY ("lid") REFERENCES "Locality" ("id");
+ALTER TABLE "emergency_service" ADD FOREIGN KEY ("lid") REFERENCES "locality" ("id");
 
-ALTER TABLE "Incident" ADD FOREIGN KEY ("did") REFERENCES "Disaster" ("id");
+ALTER TABLE "incident" ADD FOREIGN KEY ("did") REFERENCES "disaster" ("id");
 
-ALTER TABLE "Incident" ADD FOREIGN KEY ("lid") REFERENCES "Locality" ("id");
+ALTER TABLE "incident" ADD FOREIGN KEY ("lid") REFERENCES "locality" ("id");
 
-ALTER TABLE "Incident_Funding" ADD FOREIGN KEY ("iid") REFERENCES "Incident" ("id");
+ALTER TABLE "incident_funding" ADD FOREIGN KEY ("iid") REFERENCES "incident" ("id");
 
-ALTER TABLE "Incident_Funding" ADD FOREIGN KEY ("fid") REFERENCES "Funding_Source" ("id");
+ALTER TABLE "incident_funding" ADD FOREIGN KEY ("fid") REFERENCES "funding_source" ("id");
 
-ALTER TABLE "Incident_Resource_Allocation" ADD FOREIGN KEY ("iid") REFERENCES "Incident" ("id");
+ALTER TABLE "incident_resource_allocation" ADD FOREIGN KEY ("iid") REFERENCES "incident" ("id");
 
-ALTER TABLE "Incident_Resource_Allocation" ADD FOREIGN KEY ("eid") REFERENCES "Essential" ("id");
+ALTER TABLE "incident_resource_allocation" ADD FOREIGN KEY ("eid") REFERENCES "essential" ("id");
 
-ALTER TABLE "Incident_Volunteer_Allotment" ADD FOREIGN KEY ("iid") REFERENCES "Incident" ("id");
+ALTER TABLE "incident_resource_allocation" ADD FOREIGN KEY ("iid") REFERENCES "incident" ("id");
 
-ALTER TABLE "Incident_Volunteer_Allotment" ADD FOREIGN KEY ("vid") REFERENCES "Volunteer" ("id");
+ALTER TABLE "incident_resource_allocation" ADD FOREIGN KEY ("vid") REFERENCES "volunteer" ("id");
