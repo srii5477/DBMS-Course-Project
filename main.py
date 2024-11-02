@@ -22,7 +22,11 @@ def index():
     print(results)
     return render_template("index.html", results=results)
 
-# Form for adding a new incident
+#add incident
+@app.route('/new-incident')
+def show_new_incident_form():
+    return render_template("add_incident.html")
+# post
 @app.route('/new-incident', methods=['POST'])
 def new_incident():
     type_of_calamity = request.form.get('type_of_calamity')
@@ -31,12 +35,17 @@ def new_incident():
     description = request.form.get('description')
     severity = request.form.get('severity')
     status = request.form.get('status')
+    active = request.form.get('active')
+    reqd_volunteers= request.form.get('reqd_volunteers')
     monitoring_bureau = request.form.get('monitoring_bureau')
     reqd_funds = request.form.get('reqd_funds')
     affected_pop = request.form.get('affected_pop')
 
     db, cursor = db_connection()
     
+    cursor.execute("select max(id) from incident")
+    id=cursor.fetchone()
+
     # Fetch Disaster ID
     cursor.execute("SELECT id FROM disaster WHERE name=%s", (type_of_calamity,))
     disaster_id = cursor.fetchone()
@@ -47,8 +56,8 @@ def new_incident():
     
     # Insert into Incident table
     cursor.execute(
-        'INSERT INTO incident(did, lid, date, time, description, severity, status, monitoring_bureau, reqd_funds, affected_population) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)',
-        (disaster_id[0], locality_id[0], date, description, severity, status, monitoring_bureau, reqd_funds, affected_pop)
+        'INSERT INTO incident VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s,%s,%s)',
+        (id[0]+1,disaster_id[0], locality_id[0], date, description, severity, status, active,monitoring_bureau, reqd_funds, affected_pop,reqd_volunteers)
     )
     db.commit()
     db.close()
