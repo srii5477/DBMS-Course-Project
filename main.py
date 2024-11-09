@@ -60,8 +60,8 @@ def new_incident():
     print(id[0]+1,disaster_id[0], locality_id[0], date, description, severity, status, active,monitoring_bureau, reqd_funds, affected_pop,reqd_volunteers,incident_name)
     # Insert into Incident table
     cursor.execute(
-        'INSERT INTO incident VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s,%s,%s,%s)',
-        (id[0]+1,disaster_id[0], locality_id[0], date, description, severity, status, active,monitoring_bureau, reqd_funds, affected_pop,reqd_volunteers,incident_name)
+        'INSERT INTO incident VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s,%s,%s)',
+        (id[0]+1,disaster_id[0], locality_id[0], date, description, severity, status, active,monitoring_bureau, reqd_funds, affected_pop,reqd_volunteers)
     )
     db.commit()
     db.close()
