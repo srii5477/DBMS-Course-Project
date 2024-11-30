@@ -225,6 +225,17 @@
               </div>
               
               </div>
+          <div class="locality-incident">
+            <label for="localities">View active incidents in a locality.</label>
+
+            <a href="/locality-search"><button class='btn btn-outline-info' type="submit">Go.</button></a>
+          </div>
+          <div class="disasters">
+            <h3> Disasters that are actively being monitored across the state: </h3>
+            {% for each in results %}
+              {{ each }} 
+            {% endfor %}
+          </div>
           
           <footer class="footer bg-inverse">
             <div class="container-fluid">

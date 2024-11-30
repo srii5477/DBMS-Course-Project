@@ -10,21 +10,18 @@ app = Flask(__name__)
 
 
 def db_connection():
-    result = urlparse(os.getenv('POSTGRES_URI'))
+    result = urlparse(os.getenv("POSTGRES_URI"))
     username = result.username
     password = result.password
     database = result.path[1:]
     hostname = result.hostname
     port = result.port
     db = psycopg2.connect(
-        database = database,
-        user = username,
-        password = password,
-        host = hostname,
-        port = port
+        database=database, user=username, password=password, host=hostname, port=port
     )
     cursor = db.cursor()
-    cursor.execute("""
+    cursor.execute(
+        """
                    DROP TABLE IF EXISTS Disaster, Locality, Funding_Source, Essential, Organization, Volunteer,
 Shelter, Emergency_Service, Incident, Incident_Funding, Incident_Resource_Allocation, Incident_Volunteer_Allotment ;
 
@@ -146,7 +143,11 @@ ALTER TABLE "incident_volunteer_allotment" ADD FOREIGN KEY ("iid") REFERENCES "i
 
 ALTER TABLE "incident_volunteer_allotment" ADD FOREIGN KEY ("vid") REFERENCES "volunteer" ("id");
 
-                   """)
+INSERT INTO "locality" VALUES (1, 'kollam', 500, 'rural');
+INSERT INTO "disaster" VALUES(1, 'Flood', 'Caused usually by heavy rainfall or poor drainage management.', 'Disaster relief teams must assemble to assess the situation and organize proper drainage and rescue personnel.');
+INSERT INTO "incident" VALUES(1, 1, 1, NOW(), 'Severe rainfall in the monsoon season of 24', 'High', 'Actively monitoring', 1, 'Centre for Disaster Management Kerala', 5000, 10000, 50);
+                   """
+    )
     db.commit()
     return db, cursor
 
@@ -157,8 +158,8 @@ def index():
     cursor.execute("SELECT * FROM disaster")
     results = cursor.fetchall()
     db.close()
-    print(results)
-    return render_template("index.html", results=results)
+    print(type(results[0]))
+    return render_template("index.html", results=results[0])
 
 
 # add incident
@@ -190,11 +191,9 @@ def new_incident():
     cursor.execute("select max(id) from incident")
     id = cursor.fetchone()
 
-    # Fetch Disaster ID
     cursor.execute("SELECT id FROM disaster WHERE name=%s", (type_of_calamity,))
     disaster_id = cursor.fetchone()
 
-    # Fetch Locality ID
     cursor.execute("SELECT id FROM locality WHERE name=%s", (place,))
     locality_id = cursor.fetchone()
 
@@ -336,9 +335,6 @@ def update_incident():
     db.close()
     return redirect("/successfully-entered-page")
 
-
-# -------------------Fund allocation and donation---------------------------
-# -----------------Donation---------------------
 @app.route("/donate-fund-indi", methods=["POST"])
 def donate_fund_indi():
     name = request.form.get("name")
@@ -347,13 +343,10 @@ def donate_fund_indi():
     incident_name = request.form.get("incident_name")
 
     db, cursor = db_connection()
-
-    # Fetch the next funding source ID
     cursor.execute("SELECT MAX(id) FROM funding_source")
     max_id = cursor.fetchone()[0]
     new_fund_id = max_id + 1 if max_id is not None else 1
 
-    # Fetch the incident ID
     cursor.execute(
         "SELECT id FROM incident WHERE LOWER(incident_name) LIKE %s",
         (f"%{incident_name.lower()}%",),
@@ -362,7 +355,6 @@ def donate_fund_indi():
     if not iid:
         return "Could not add: Incident not found."
 
-    # Check if individual funding source already exists
     cursor.execute("SELECT id FROM funding_source WHERE name=%s", (name,))
     funding_id = cursor.fetchone()
 
@@ -372,9 +364,8 @@ def donate_fund_indi():
             "INSERT INTO funding_source (id, name, contact, type_of_organization) VALUES (%s, %s, %s,%s)",
             (new_fund_id, name, contact, "Individual"),
         )
-        funding_id = (new_fund_id,)  # Set funding_id for later use
+        funding_id = (new_fund_id,)  
 
-    # Insert into incident_funding
     cursor.execute(
         "INSERT INTO incident_funding (iid, fid, std_amt_donated, amt_left) VALUES (%s, %s, %s, %s)",
         (iid[0], funding_id[0], std_amt_donated, std_amt_donated),
@@ -589,18 +580,18 @@ def locality_search():
 
     if request.method == "POST":
         locality_name = request.form.get("locality_name")
-
-        # Database query to check if locality exists
+        print(locality_name)
         db, cursor = db_connection()
         cursor.execute("select id from locality where name = %s", (locality_name,))
         id = cursor.fetchone()
+        print(id)
         cursor.execute("SELECT * FROM incident WHERE lid = %s", (id[0],))
 
-        locality_info = cursor.fetchall()  # Fetch one row of locality info if it exists
+        locality_info = cursor.fetchall() 
         db.close()
 
         if not locality_info:
-            not_found_message = "Sorry, locality not found."
+            not_found_message = "The locality you have entered is invalid or there are no active incidents there."
         print(locality_info)
 
     return render_template(
