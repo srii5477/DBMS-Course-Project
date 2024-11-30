@@ -58,7 +58,7 @@ CREATE TABLE "shelter" (
   "current_capacity" integer
 );
 
-CREATE TABLE "emergency_Service" (
+CREATE TABLE "emergency_service" (
   "id" integer PRIMARY KEY,
   "lid" integer,
   "name" text,
