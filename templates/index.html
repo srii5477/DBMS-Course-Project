@@ -5,18 +5,377 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crisis Management System</title>
     <link rel="stylesheet" href="{{ url_for('static', filename= 'css/style.css') }}">
-</head>
-<body>
-    <h1>Hello!</h1>
-    <h3>Disaster Types tracked by the DMS:</h3>
-    {% for result in results %}
-        <h5>{{ result[1] }}</h5>
-        <h5>{{ result[2] }}</h5>
-        <h5>{{ result[3] }}</h5>
-        <h5>{{ result[4] }}</h5>
-        <h5>{{ result[5] }}</h5>
-        <h5>{{ result[6] }}</h5>
-        <hr>
-    {% endfor %}
-</body>
+    <link rel="stylesheet" href="bootstrap-4.6.2-dist/css/bootstrap-grid.min.css">
+    <link rel="stylesheet" href="bootstrap-4.6.2-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.2/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=PT+Serif&display=swap" rel="stylesheet">
+</head>   
+  <body>
+      <div class="container-fluid">
+          <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+              <a class="navbar-brand" href="#">DESK</a>
+              <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarNavDropdown">
+
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                        </li>
+
+                    <form class="form-inline my-2 my-lg-0">
+                        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
+                    </form>
+                    </ul>
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Relief Camp</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+                                Map
+                            </a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="#">Thiruvananthapuram</a>
+                                <a class="dropdown-item" href="#">Kollam</a>
+                                <a class="dropdown-item" href="#">Alappuza</a>
+                                <a class="dropdown-item" href="#">Pathanamthitta</a>
+                                <a class="dropdown-item" href="#">Kottayam</a>
+                                <a class="dropdown-item" href="#">Eranakulam</a>
+                                <a class="dropdown-item" href="#">Idukki</a>
+                                <a class="dropdown-item" href="#">Thrissur</a>
+                                <a class="dropdown-item" href="#">Palakad</a>
+                                <a class="dropdown-item" href="#">Wayanad</a>
+                                <a class="dropdown-item" href="#">Malapuram</a>
+                                <a class="dropdown-item" href="#">Kozikode</a>
+                                <a class="dropdown-item" href="#">Kannur</a>
+                                <a class="dropdown-item" href="#">Kasargod</a>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="contact.html">Contacts</a>
+                        </li>
+                        <li class="nav-item">
+                             <a class="nav-link" href="#" data-toggle="modal" data-target="#emergencyModal">Emergency</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            <div class="modal fade" id="emergencyModal" tabindex="-1" role="dialog" aria-labelledby="emergencyModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="emergencyModalLabel">Emergency Contact Form</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="form-group">
+                                    <label for="name">Name</label>
+                                    <input type="text" class="form-control" id="name" placeholder="Enter your name" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="name">Phone Number</label>
+                                    <input type="number" class="form-control" id="number" placeholder="Enter your number" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="name">Email</label>
+                                    <input type="email" class="form-control" id="nemail" placeholder="Enter your email" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="name">Address</label>
+                                    <input type="text" class="form-control" id="naddress" placeholder="Enter your address" required>
+                                </div>
+                            </form>
+                            </div>
+                        <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Submit</button>
+                  </div>
+                        </div>
+                    </div>
+                </div>
+          
+              <div class="sectionLight">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="jumbotron jumbotron-fluid">
+                            <div class="container">
+                                <h1 class="display-4">DISASTER MANAGEMENT SYSTEM </h1>
+                                <p class="lead">Preparedness is the ultimate confidence builder</p>
+                            </div>
+                        </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col"></div>
+                      <div class="col-sm-12 col-md-6">
+                          <div id="mainCarousel" class="carousel slide" data-ride="carousel">
+                              <div class="carousel-inner">
+                                <div class="carousel-item active">
+                                  <img src="../static/css/Flood.jpg" class="d-block w-100" alt="...">
+                                    <div class="carousel-caption d-none d-md-block">
+                                        <h5>Flood</h5>
+                                      </div>
+                                </div>
+                                <div class="carousel-item">
+                                  <img src="../static/css/Earthquake.jpg" class="d-block w-100" alt="...">
+                                    <div class="carousel-caption d-none d-md-block">
+                                        <h5>Earthquake</h5>
+                                      </div>
+                                </div>
+                                <div class="carousel-item">
+                                  <img src="../static/css/Tsunami.jpg" class="d-block w-100" alt="...">
+                                    <div class="carousel-caption d-none d-md-block">
+                                        <h5>Tsunami</h5>
+                                      </div>
+                                </div>
+                                <div class="carousel-item">
+                                  <img src="../static/css/Covidd.jpeg" class="d-block w-100" alt="...">
+                                    <div class="carousel-caption d-none d-md-block">
+                                        <h5>Covid</h5>
+                                      </div>
+                                </div>
+                              </div>
+                             <button class="carousel-control-prev" type="button" data-target="#mainCarousel" data-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Previous</span>
+                              </button>
+                              <button class="carousel-control-next" type="button" data-target="#mainCarousel" data-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Next</span>
+                              </button>
+                            </div>
+
+                      </div>
+                      <div class="col"></div>
+                  </div>
+              </div>
+          
+          
+          <div class="sectionLight">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-lg-6 mb-4">
+                <a href="flood_page.html" class="position-relative">
+                    <img class="img-fluid imgCenter" src="../static/css/floo.jpg" alt="Flood Image">
+                    <div class="caption">Flood Disaster</div>
+                </a>
+            </div>
+            <div class="col-sm-12 col-lg-6 mb-4">
+                <a href="tsunami_page.html" class="position-relative">
+                    <img class="img-fluid imgCenter" src="../static/css/Tsunami.jpg" alt="Tsunami Image">
+                    <div class="caption">Tsunami Disaster</div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="sectionLight">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-lg-6 mb-4">
+                <a href="earthquake_page.html" class="position-relative">
+                    <img class="img-fluid imgCenter" src="../static/css/earth.jpg" alt="Earthquake Image">
+                    <div class="caption">Earthquake Disaster</div>
+                </a>
+            </div>
+            <div class="col-sm-12 col-lg-6 mb-4">
+                <a href="coronavirus_page.html" class="position-relative">
+                    <img class="img-fluid imgCenter" src="../static/css/corona.jpg" alt="Covid Image">
+                    <div class="caption">Covid Disaster</div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+          
+          
+          <div class="sectionDark">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="row">
+                        <div class="col-sm-12 col-lg-6">
+                            <p class = "para_ref_1">VOLUNTEER</p>
+                            <p class = "para_ref">Volunteering in disaster management is a powerful way to make a meaningful difference in the lives of those affected by crises. By offering your time and skills, you become an essential part of emergency response efforts, helping to provide relief, support recovery, and foster resilience in communities. Your dedication can bring hope and strength to those facing their toughest moments. Step up and join our team of volunteers to help save lives and rebuild futures.</p>
+                            <div class="coolStuffRapper">
+                        <button type="button" class="btn-lg coolStuffRapper" data-toggle="modal" data-target="#coolStuffModall">Sign-up</button>
+                  </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-6">
+                            <p class = "para_ref_1">DONATION</p>
+                            <p class = "para_ref"> Donating to disaster management efforts is an impactful way to support communities in need when they need it most. Your contributions help fund essential resources like food, water, medical aid, and rebuilding materials, ensuring that affected families receive the help they require to recover and thrive. Every donation, big or small, fuels relief operations and provides hope in times of crisis. Make a difference today—donate and be a lifeline for those in need.</p>
+                            <div class="col-sm-12 col-lg-6">
+                    <div class="coolStuffRapper">
+                        <button type="button" class="btn-lg coolStuffRapper" data-toggle="modal" data-target="#coolStuffModal">Donate</button>
+                  </div>
+                </div>
+                        </div>
+                    </div>
+                  </div>
+              </div>
+              
+              </div>
+          
+          <footer class="footer bg-inverse">
+            <div class="container-fluid">
+                  <div class="row">
+                    <div class="col-sm-12 col-lg-3">
+                      <img class="img-fluid footerImg" src="loogo.webp">
+                      </div>
+                      <div class="row">
+                      <div class="col-sm-12 col-sm-9">
+                            <p class="para1">To know more login and come with us to explore more of it.We will be really glad to guide you and know more. <p>
+                          <p class="para2">Together, we can create safer, stronger communities.</p>
+                          <p class="para2">Join us in our mission to provide hope, relief, and resilience when it matters most</p>
+                          <ul>
+                            <li class="click"><a href="https://www.ready.gov/business/resources/resource-management"><b>Quick Resource</b></a></li>
+                              <li class="click"><a href="https://www.google.com/aclk?sa=l&ai=DChcSEwjukM6rs8-JAxWipGYCHZwCJ5YYABACGgJzbQ&ae=2&aspm=1&co=1&ase=2&gclid=Cj0KCQiArby5BhCDARIsAIJvjIRElGY_0rQnV6PMeX2aq0gKFvyOwVTRNBNt444tpTQ3IfO4b97mBAMaAvN9EALw_wcB&sig=AOD64_0UOq0yLjaslS239_1tvkNx9mfCvw&q&nis=4&adurl&ved=2ahUKEwjn0cers8-JAxWEzTgGHTD0Dg0Q0Qx6BAgNEAM"><b>UNICEF</b></a></li>
+                               <li class="click"><a href="https://in.linkedin.com/company/national-ngo-s-confederation"><b>National NGO</b></a></li>
+                          </ul>
+                      </div>
+              </div>
+                </div>
+            </div>
+          </footer>
+          
+            <div class="modal fade" id="coolStuffModall" tabindex="-1" aria-labelledby="coolStuffLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Register</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-sm-12">
+                            <div class="modalFormWrapper">
+                                <form>
+                                  <div class="form-group">
+                                    <label for="forName">Name</label>
+                                    <input type="text" class="form-control" id="forname" placeholder="Name">
+                                  </div>
+                                    <div class="form-group">
+                                    <label for="formEmail">Email</label>
+                                    <input type="email" class="form-control" id="formEmail" placeholder="Email">
+                                  </div>
+                                    <div class="form-group">
+                                    <label for="forContact">Phone Number</label>
+                                    <input type="number" class="form-control" id="forname" placeholder="contact">
+                                  </div>
+                                  
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Submit</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <div class="modal fade" id="coolStuffModal" tabindex="-1" aria-labelledby="coolStuffLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Register</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-sm-12">
+                            <div class="modalFormWrapper">
+                                <form>
+                                  <div class="form-group">
+                                    <label for="forName">Name</label>
+                                    <input type="text" class="form-control" id="forname" placeholder="Name">
+                                  </div>
+                                    <div class="form-group">
+                                    <label for="formEmail">Email</label>
+                                    <input type="email" class="form-control" id="formEmail" placeholder="Email">
+                                  </div>
+                                    <div class="form-group">
+                                    <label for="forContact">Phone Number</label>
+                                    <input type="number" class="form-control" id="forname" placeholder="contact">
+                                  </div>
+                                  
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Submit</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+      
+      
+      <!-------next modal ------>
+      <div class="modal fade" id="popUp" tabindex="-1" aria-labelledby="popUpabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Register</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-sm-12">
+                            <div class="modalFormWrapper">
+                                <form>
+                                  <div class="form-group">
+                                    <label for="forName">Name</label>
+                                    <input type="text" class="form-control" id="forname" placeholder="Name">
+                                  </div>
+                                    <div class="form-group">
+                                    <label for="formEmail">Email</label>
+                                    <input type="email" class="form-control" id="formEmail" placeholder="Email">
+                                  </div>
+                                    <div class="form-group">
+                                    <label for="forContact">Phone Number</label>
+                                    <input type="number" class="form-control" id="forname" placeholder="contact">
+                                  </div>
+                                  
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Submit</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+      
+
+   
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js" integrity="sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+" crossorigin="anonymous"></script>
+    <script src="bootstrap-4.6.2-dist/js/bootstrap.min.js"></script>
+    
+  </body>
 </html>
