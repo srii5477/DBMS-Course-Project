@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 import os
 
 load_dotenv()
-from urllib.parse import urlparse # for python 3+ use: from urllib.parse import urlparse
+from urllib.parse import urlparse
 
 app = Flask(__name__)
 
