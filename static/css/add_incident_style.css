@@ -1,0 +1,56 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4; /* Light gray background */
+    padding: 20px; /* Padding around the content */
+}
+
+h1 {
+    font-family: 'Roboto Slab', serif;
+    text-align: center; 
+    margin-bottom: 20px; 
+    color: #000066; 
+}
+
+form {
+    max-width: 800px;
+    margin: 0 auto; 
+    padding: 20px;
+    background-color: #ffe6cc; 
+    border: 1px solid #cccccc; 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); 
+}
+
+label {
+    font-family: 'PT Serif', serif;
+    display: block;
+    margin-bottom: 10px; 
+}
+
+input, textarea {
+    width: 90%; 
+    padding: 10px; 
+    margin-bottom: 20px; 
+    border: 1px solid #cccccc; 
+}
+
+input[type="number"] {
+    width: 50%; 
+}
+
+textarea {
+    resize: vertical; 
+}
+
+button[type="submit"] {
+    background-color: #4CAF50;
+    color: #ffffff; 
+    padding: 10px 20px;
+    border: none; 
+    border-radius: 5px;
+    cursor: pointer; 
+}
+
+button[type="submit"]:hover {
+    background-color: #3e8e41; 
+}
+
