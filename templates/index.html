@@ -60,7 +60,7 @@
                             </div>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="contact.html">Contacts</a>
+                            <a class="nav-link" href="/contact-us">Contacts</a>
                         </li>
                         <li class="nav-item">
                              <a class="nav-link" href="#" data-toggle="modal" data-target="#emergencyModal">Emergency</a>
@@ -103,7 +103,24 @@
                         </div>
                     </div>
                 </div>
-          
+                <div class="horizontal-bar">
+                  <a href="/add-shelter" class="nav-item">Add Shelter</a>
+                  <a href="/new-incident" class="nav-item">Add Incident</a>
+                  <!-- <a href="/donate-funds" class="nav-item">Donate Funds</a> -->
+                  <a href="/fund-alloc" class="nav-item">Fund Allocation</a>
+                  <a href="/locality-search" class="nav-item">Locality Search</a>
+                </div>
+                
+                <div class="incident-ticker">
+                  <div class="ticker-content">
+                    {% for result in results %}
+                    <a href="incident1.html">{{result[12]}}</a>
+                    <span>|</span>
+                    {% endfor %}
+                  </div>
+                </div>
+
+
               <div class="sectionLight">
                 <div class="row">
                     <div class="col-sm-12">
@@ -165,13 +182,13 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-12 col-lg-6 mb-4">
-                <a href="flood_page.html" class="position-relative">
+                <a href="./flood_page.html" class="position-relative">
                     <img class="img-fluid imgCenter" src="../static/css/floo.jpg" alt="Flood Image">
                     <div class="caption">Flood Disaster</div>
                 </a>
             </div>
             <div class="col-sm-12 col-lg-6 mb-4">
-                <a href="tsunami_page.html" class="position-relative">
+                <a href="./tsunami_page.html" class="position-relative">
                     <img class="img-fluid imgCenter" src="../static/css/Tsunami.jpg" alt="Tsunami Image">
                     <div class="caption">Tsunami Disaster</div>
                 </a>
@@ -184,13 +201,13 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-12 col-lg-6 mb-4">
-                <a href="earthquake_page.html" class="position-relative">
+                <a href="./earthquake_page.html" class="position-relative">
                     <img class="img-fluid imgCenter" src="../static/css/earth.jpg" alt="Earthquake Image">
                     <div class="caption">Earthquake Disaster</div>
                 </a>
             </div>
             <div class="col-sm-12 col-lg-6 mb-4">
-                <a href="coronavirus_page.html" class="position-relative">
+                <a href="./coronavirus_page.html" class="position-relative">
                     <img class="img-fluid imgCenter" src="../static/css/corona.jpg" alt="Covid Image">
                     <div class="caption">Covid Disaster</div>
                 </a>
@@ -230,7 +247,7 @@
             <div class="container-fluid">
                   <div class="row">
                     <div class="col-sm-12 col-lg-3">
-                      <img class="img-fluid footerImg" src="loogo.webp">
+                      <img class="img-fluid footerImg" src="../static/css/loogo.webp">
                       </div>
                       <div class="row">
                       <div class="col-sm-12 col-sm-9">
@@ -330,8 +347,6 @@
             </div>
           </div>
       
-      
-      <!-------next modal ------>
       <div class="modal fade" id="popUp" tabindex="-1" aria-labelledby="popUpabel" aria-hidden="true">
               <div class="modal-dialog">
                 <div class="modal-content">
@@ -382,4 +397,3 @@
     
   </body>
 </html>
-
