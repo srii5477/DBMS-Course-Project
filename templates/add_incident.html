@@ -3,16 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/css/add_incident_style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400&family=PT+Serif:wght@400&display=swap" rel="stylesheet">
     <title>Add New Incident</title>
 </head>
 <body>
-    <h2>Add New Incident</h2>
+    <h2 style="text-align: center;">Add New Incident</h2>
 
     <form action="/new-incident" method="POST">
         <label for="type_of_calamity">Type of Calamity:</label>
         <input type="text" id="type_of_calamity" name="type_of_calamity" required>
         <br><br>
 
+
+        <label for="incident_name">Incident name:</label>
+        <input type="text" id="incident_name" name="incident_name" required>
+        <br><br>
         <label for="date">Date and Time:</label>
         <input type="datetime-local" id="date" name="date" required>
         <br><br>
