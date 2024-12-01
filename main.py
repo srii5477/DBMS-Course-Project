@@ -99,6 +99,7 @@ CREATE TABLE "incident" (
   "did" integer,
   "lid" integer,
   "date_time" timestamp,
+  "name" text,
   "description" text,
   "severity" text,
   "status" text,
@@ -150,8 +151,10 @@ INSERT INTO "locality" VALUES (1, 'Wayanad', 500, 'Tier 3');
 INSERT INTO "locality" VALUES (2, 'Kozhikode', 500, 'Tier 2');
 INSERT INTO "disaster" VALUES(1, 'Landslide', 'A landslide is a mass movement of material, such as rock, earth or debris, down a slope. They can happen suddenly or more slowly over long periods of time.', 'Disaster relief teams must assemble to assess the situation and organize proper drainage and rescue personnel.');
 INSERT INTO "disaster" VALUES(2, 'Infectious Disease Outbreak', 'In epidemiology, an outbreak is a sudden increase in occurrences of a disease when cases are in excess of normal expectancy for the location or season.', 'Disaster relief teams must assemble to assess the situation and organize proper drainage and rescue personnel.');
-INSERT INTO "incident" VALUES(1, 1, 1, NOW(), 'In the early hours of July 30, 2024, Chooralmala and Mundakkai villages in the district of Wayanad in Kerala were hit by devastating landslides triggered by torrential downpour. The massive landslides so far has claimed over 230 lives. According to the district administration, over 130 people are still missing as of August 13. This is the worst natural disaster to occur in Kerala since the 2018 floods', 'High', 'Actively monitoring', 0, 'Centre for Disaster Control, Kerala', 5000, 10000, 50);
-INSERT INTO "incident" VALUES(2, 2, 2, NOW(), 'It was confined to the village of Pazhur in the Chathamangalam gram panchayat of Kozhikode district. It claimed one life, on 5 Sept 2021. An outbreak began in Kozhikode district in Aug 2023, claiming two lives and infecting four other people by 16 Sept of that year.', 'High', 'Actively monitoring', 1, 'Centre for Disease Control, Kerala', 5000, 10000, 50);
+INSERT INTO "incident" VALUES(1, 1, 1, NOW(), 'Wayanad Landslide', 'In the early hours of July 30, 2024, Chooralmala and Mundakkai villages in the district of Wayanad in Kerala were hit by devastating landslides triggered by torrential downpour. The massive landslides so far has claimed over 230 lives. According to the district administration, over 130 people are still missing as of August 13. This is the worst natural disaster to occur in Kerala since the 2018 floods', 'High', 'Actively monitoring', 0, 'Centre for Disaster Control, Kerala', 5000, 10000, 50);
+INSERT INTO "incident" VALUES(2, 2, 2, NOW(), '2021 Nipah Outbreak', 'It was confined to the village of Pazhur in the Chathamangalam gram panchayat of Kozhikode district. It claimed one life, on 5 Sept 2021. An outbreak began in Kozhikode district in Aug 2023, claiming two lives and infecting four other people by 16 Sept of that year.', 'High', 'Actively monitoring', 1, 'Centre for Disease Control, Kerala', 5000, 10000, 50);
+INSERT INTO "disaster" VALUES(3, 'Flood', 'A mass movement of water induced by heavy rainfall');
+INSERT INTO "locality" VALUES (3, 'Trivandrum', 500, 'Tier 2');
                    """
     )
     db.commit()
@@ -160,8 +163,9 @@ INSERT INTO "incident" VALUES(2, 2, 2, NOW(), 'It was confined to the village of
 @app.route('/')
 def index():
     db, cursor = db_connection()
-    cursor.execute('SELECT * FROM incident where active=1')
+    cursor.execute('SELECT * FROM "incident" where active=1')
     results = cursor.fetchall()
+    print(results)
     db.close()
     final = []
     j = 1
@@ -183,11 +187,11 @@ def new_incident():
     description = request.form.get('description')
     severity = request.form.get('severity')
     status = request.form.get('status')
-    active = request.form.get('active')
-    reqd_volunteers= request.form.get('reqd_volunteers')
+    active = int(request.form.get('active'))
+    reqd_volunteers= int(request.form.get('reqd_volunteers'))
     monitoring_bureau = request.form.get('monitoring_bureau')
-    reqd_funds = request.form.get('reqd_funds')
-    affected_pop = request.form.get('affected_pop')
+    reqd_funds = int(request.form.get('reqd_funds'))
+    affected_pop = int(request.form.get('affected_pop'))
     incident_name = request.form.get('incident_name')
 
     print(incident_name)
@@ -196,6 +200,7 @@ def new_incident():
     
     cursor.execute("select max(id) from incident")
     id=cursor.fetchone()
+    print(id)
 
     cursor.execute("SELECT id FROM disaster WHERE name=%s", (type_of_calamity,))
     disaster_id = cursor.fetchone()
@@ -203,13 +208,16 @@ def new_incident():
     cursor.execute("SELECT id FROM locality WHERE name=%s", (place,))
     locality_id = cursor.fetchone()
     
-    print(id[0]+1,disaster_id[0], locality_id[0], date, description, severity, status, active,monitoring_bureau, reqd_funds, affected_pop,reqd_volunteers,incident_name)
-    # Insert into Incident table
+    print(disaster_id)
+    print(locality_id)
+
     cursor.execute(
-        'INSERT INTO incident VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s,%s,%s,%s)',
-        (id[0]+1,disaster_id[0], locality_id[0], date, description, severity, status, active,monitoring_bureau, reqd_funds, affected_pop,reqd_volunteers,incident_name)
-    )
+        'INSERT INTO "incident" VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s,%s,%s,%s)',
+        (id[0]+1, disaster_id[0], locality_id[0], date, incident_name, description, severity, status, active, monitoring_bureau, reqd_funds, affected_pop, reqd_volunteers)
+        )
     db.commit()
+    cursor.execute('SELECT * FROM incident')
+    print(cursor.fetchall())
     db.close()
     return redirect("/successfully-entered-page")
 
