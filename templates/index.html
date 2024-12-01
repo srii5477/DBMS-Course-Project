@@ -244,7 +244,7 @@
               </div>
           
           <footer class="footer bg-inverse">
-            <div class="container-fluid">
+            <div class="container-fluid flex-wrap">
                   <div class="row">
                     <div class="col-sm-12 col-lg-3">
                       <img class="img-fluid footerImg" src="../static/css/loogo.webp">
@@ -309,7 +309,7 @@
               <div class="modal-dialog">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Register</h5>
+                    <h5 class="modal-title" id="exampleModalLabel"></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                     </button>
@@ -321,17 +321,9 @@
                             <div class="modalFormWrapper">
                                 <form>
                                   <div class="form-group">
-                                    <label for="forName">Name</label>
-                                    <input type="text" class="form-control" id="forname" placeholder="Name">
+                                    <label for="forName">How do you want to donate as?</label>
                                   </div>
-                                    <div class="form-group">
-                                    <label for="formEmail">Email</label>
-                                    <input type="email" class="form-control" id="formEmail" placeholder="Email">
-                                  </div>
-                                    <div class="form-group">
-                                    <label for="forContact">Phone Number</label>
-                                    <input type="number" class="form-control" id="forname" placeholder="contact">
-                                  </div>
+                              
                                   
                                 </form>
                             </div>
@@ -340,54 +332,161 @@
                 </div>
             </div>
                   <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Submit</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" name="individual" data-toggle="modal" data-target="#donate_as_indi">Donate as individual</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" name="organisation" data-toggle="modal" data-target="#donate_as_org">Donate as organisation</button>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-      
-      <div class="modal fade" id="popUp" tabindex="-1" aria-labelledby="popUpabel" aria-hidden="true">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Register</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-sm-12">
-                            <div class="modalFormWrapper">
-                                <form>
-                                  <div class="form-group">
-                                    <label for="forName">Name</label>
-                                    <input type="text" class="form-control" id="forname" placeholder="Name">
-                                  </div>
-                                    <div class="form-group">
-                                    <label for="formEmail">Email</label>
-                                    <input type="email" class="form-control" id="formEmail" placeholder="Email">
-                                  </div>
-                                    <div class="form-group">
-                                    <label for="forContact">Phone Number</label>
-                                    <input type="number" class="form-control" id="forname" placeholder="contact">
-                                  </div>
-                                  
-                                </form>
-                            </div>
-                        </div>
-                    </div>
+
+          <div class="modal fade" id="popUp" tabindex="-1" aria-labelledby="popUpabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Register</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
                 </div>
-            </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Submit</button>
+                <div class="modal-body">
+                  <div class="container-fluid">
+                      <div class="row">
+                          <div class="col-sm-12">
+                          <div class="modalFormWrapper">
+                              <form>
+                                <div class="form-group">
+                                  <label for="forName">Name</label>
+                                  <input type="text" class="form-control" id="forname" placeholder="Name">
+                                </div>
+                                  <div class="form-group">
+                                  <label for="formEmail">Email</label>
+                                  <input type="email" class="form-control" id="formEmail" placeholder="Email">
+                                </div>
+                                  <div class="form-group">
+                                  <label for="forContact">Phone Number</label>
+                                  <input type="number" class="form-control" id="forname" placeholder="contact">
+                                </div>
+                                
+                              </form>
+                          </div>
+                      </div>
                   </div>
+              </div>
+          </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Submit</button>
                 </div>
               </div>
             </div>
+          </div>
+          
+
+          <div class="modal fade" id="donate_as_indi" tabindex="-1" aria-labelledby="donate_as_indi" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Donate as individual</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <div class="container-fluid">
+                      <div class="row">
+                          <div class="col-sm-12">
+                          <div class="modalFormWrapper">
+                            <form action="/donate-fund-indi" method="POST">
+                              <div class="form-group">
+                                  <label for="forName">Name</label>
+                                  <input type="text" class="form-control" id="name" name="name" placeholder="name" required>
+                              </div>
+                              <div class="form-group">
+                                  <label for="formEmail">Contact</label>
+                                  <input type="number" class="form-control" id="contact" name="contact" placeholder="contact" required>
+                              </div>
+                              <div class="form-group">
+                                  <label for="forContact">Amount</label>
+                                  <input type="number" class="form-control" id="std_amt_donated" name="std_amt_donated" placeholder="amount" required>
+                              </div>
+                              <div class="form-group">
+                                  <label for="forContact">Incident Name:</label>
+                                  <input type="text" class="form-control" id="incident_name" name="incident_name" placeholder="incident name" required>
+                              </div>
+                              <button type="submit" class="btn btn-secondary">Submit</button>
+                          </form>
+                          
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+                <div class="modal-footer">
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+
+
       
+          <div class="modal fade" id="donate_as_org" tabindex="-1" aria-labelledby="donate_as_org" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Donate as Organisation</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <div class="container-fluid" style="max-height: 400px; overflow-y: auto;">
+                    <div class="row">
+                      <div class="col-sm-12">
+                        <div class="modalFormWrapper">
+                          <form action="/donate-fund-org" method="POST">
+                            <div class="form-group">
+                              <label for="forName">Name</label>
+                              <input type="text" class="form-control" id="name" name="name" placeholder="Name">
+                            </div>
+                            <div class="form-group">
+                              <label for="formEmail">Contact</label>
+                              <input type="number" class="form-control" id="contact" name="contact" placeholder="Contact">
+                            </div>
+                            <div class="form-group">
+                              <label for="forContact">Amount</label>
+                              <input type="number" class="form-control" id="std_amt_donated" name="std_amt_donated" placeholder="Amount">
+                            </div>
+                            <div class="form-group">
+                              <label for="forContact">Incident Name:</label>
+                              <input type="text" class="form-control" id="incident_name" name="incident_name" placeholder="Incident Name">
+                            </div>
+                            <div class="form-group">
+                              <label for="forName">Contract Terms:</label>
+                              <input type="text" class="form-control" id="contract_terms" name="contract_terms" placeholder="Contract Terms">
+                            </div>
+                            <div class="form-group">
+                              <label for="formEmail">Renewal Period:</label>
+                              <input type="text" class="form-control" id="renewal_period" name="renewal_period" placeholder="Renewal Period">
+                            </div>
+                            <div class="form-group">
+                              <label for="forContact">Type of Organisation:</label>
+                              <input type="text" class="form-control" id="type_of_organisation" name="type_of_organisation" placeholder="Type of Organisation">
+                            </div>
+                            <button type="submit" class="btn btn-secondary">Submit</button>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer"></div>
+              </div>
+            </div>
+          </div>
+          
+      
+
 
    
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
