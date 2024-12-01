@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/css/fund_alloc_add_shelter_style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400&family=PT+Serif:wght@400&display=swap" rel="stylesheet">
+    <title>Fund Allocation</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Fund Allocation</h1>
+        <form id="fund-alloc-form" action="/fund-alloc" method="POST">
+            <div class="form-group">
+                <label for="incident-name">Incident Name:</label>
+                <input type="text" id="incident_name" name="incident_name" required>
+            </div>
+            <div class="form-group">
+                <label for="fund-amount">Fund Amount:</label>
+                <input type="number" id="fund" name="fund" required>
+            </div>
+            <button type="submit">Allocate Funds</button>
+        </form>
+    </div>
+</body>
+</html>
