@@ -242,6 +242,17 @@
               </div>
               
               </div>
+          <div class="locality-incident">
+            <label for="localities">View active incidents in a locality.</label>
+
+            <a href="/locality-search"><button class='btn btn-outline-info' type="submit">Go.</button></a>
+          </div>
+          <div class="disasters">
+            <h3> Disasters that are actively being monitored across the state: </h3>
+            {% for each in results %}
+              {{ each }} 
+            {% endfor %}
+          </div>
           
           <footer class="footer bg-inverse">
             <div class="container-fluid flex-wrap">
@@ -359,6 +370,7 @@
                                   <label for="forName">Name</label>
                                   <input type="text" class="form-control" id="forname" placeholder="Name">
                                 </div>
+
                                   <div class="form-group">
                                   <label for="formEmail">Email</label>
                                   <input type="email" class="form-control" id="formEmail" placeholder="Email">

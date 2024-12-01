@@ -6,11 +6,152 @@ import os
 
 load_dotenv()
 
+from urllib.parse import urlparse
+
+
 app = Flask(__name__)
 
 def db_connection():
     db = psycopg2.connect(database="permalist",user="postgres",password="B220584cs*",host="localhost",port="5432")
+    result = urlparse(os.getenv("POSTGRES_URI"))
+    username = result.username
+    password = result.password
+    database = result.path[1:]
+    hostname = result.hostname
+    port = result.port
+    db = psycopg2.connect(
+        database=database, user=username, password=password, host=hostname, port=port
+    )
     cursor = db.cursor()
+    cursor.execute(
+        """
+                   DROP TABLE IF EXISTS Disaster, Locality, Funding_Source, Essential, Organization, Volunteer,
+Shelter, Emergency_Service, Incident, Incident_Funding, Incident_Resource_Allocation, Incident_Volunteer_Allotment ;
+
+CREATE TABLE "disaster" (
+  "id" integer PRIMARY KEY,
+  "name" text,
+  "description" text,
+  "protocol" text
+);
+
+CREATE TABLE "locality" (
+  "id" integer PRIMARY KEY,
+  "name" text,
+  "geographical_size" text,
+  "development_level" text
+);
+
+CREATE TABLE "funding_source" (
+  "id" integer PRIMARY KEY,
+  "name" text,
+  "contract_terms" text,
+  "renewal_period" integer,
+  "std_amt_donated" integer,
+  "contact" text,
+  "type_of_organization" text
+);
+
+CREATE TABLE "essential" (
+  "id" integer PRIMARY KEY,
+  "name" text,
+  "price_per_unit" integer,
+  "qty_in_stock" integer
+);
+
+CREATE TABLE "organization" (
+  "id" integer PRIMARY KEY,
+  "name" text,
+  "type_of_organization" text,
+  "contact" text,
+  "reachability" text
+);
+
+CREATE TABLE "volunteer" (
+  "id" integer PRIMARY KEY,
+  "name" text,
+  "contact" text,
+  "address" text,
+  "oid" integer
+);
+
+CREATE TABLE "shelter" (
+  "id" integer PRIMARY KEY,
+  "lid" integer,
+  "name" text,
+  "contact" text,
+  "address" text,
+  "max_capacity" integer,
+  "current_capacity" integer
+);
+
+CREATE TABLE "emergency_service" (
+  "id" integer PRIMARY KEY,
+  "lid" integer,
+  "name" text,
+  "contact" text,
+  "num_of_personnel" integer,
+  "speed_of_response" text
+);
+
+CREATE TABLE "incident" (
+  "id" integer PRIMARY KEY,
+  "did" integer,
+  "lid" integer,
+  "date_time" timestamp,
+  "description" text,
+  "severity" text,
+  "status" text,
+  "active" integer,
+  "monitoring_bureau" text,
+  "reqd_funds" integer,
+  "affected_population" integer,
+  "reqd_volunteers" integer
+);
+
+CREATE TABLE "incident_funding" (
+  "iid" integer,
+  "fid" integer
+);
+
+CREATE TABLE "incident_resource_allocation" (
+  "iid" integer,
+  "eid" integer
+);
+
+CREATE TABLE "incident_volunteer_allotment" (
+  "iid" integer,
+  "vid" integer
+);
+
+ALTER TABLE "volunteer" ADD FOREIGN KEY ("oid") REFERENCES "organization" ("id");
+
+ALTER TABLE "shelter" ADD FOREIGN KEY ("lid") REFERENCES "locality" ("id");
+
+ALTER TABLE "emergency_service" ADD FOREIGN KEY ("lid") REFERENCES "locality" ("id");
+
+ALTER TABLE "incident" ADD FOREIGN KEY ("did") REFERENCES "disaster" ("id");
+
+ALTER TABLE "incident" ADD FOREIGN KEY ("lid") REFERENCES "locality" ("id");
+
+ALTER TABLE "incident_funding" ADD FOREIGN KEY ("iid") REFERENCES "incident" ("id");
+
+ALTER TABLE "incident_funding" ADD FOREIGN KEY ("fid") REFERENCES "funding_source" ("id");
+
+ALTER TABLE "incident_resource_allocation" ADD FOREIGN KEY ("iid") REFERENCES "incident" ("id");
+
+ALTER TABLE "incident_resource_allocation" ADD FOREIGN KEY ("eid") REFERENCES "essential" ("id");
+
+ALTER TABLE "incident_volunteer_allotment" ADD FOREIGN KEY ("iid") REFERENCES "incident" ("id");
+
+ALTER TABLE "incident_volunteer_allotment" ADD FOREIGN KEY ("vid") REFERENCES "volunteer" ("id");
+
+INSERT INTO "locality" VALUES (1, 'kollam', 500, 'rural');
+INSERT INTO "disaster" VALUES(1, 'Flood', 'Caused usually by heavy rainfall or poor drainage management.', 'Disaster relief teams must assemble to assess the situation and organize proper drainage and rescue personnel.');
+INSERT INTO "incident" VALUES(1, 1, 1, NOW(), 'Severe rainfall in the monsoon season of 24', 'High', 'Actively monitoring', 1, 'Centre for Disaster Management Kerala', 5000, 10000, 50);
+                   """
+    )
+    db.commit()
     return db, cursor
 
 @app.route('/')
@@ -19,8 +160,8 @@ def index():
     cursor.execute('SELECT * FROM incident where active=1')
     results = cursor.fetchall()
     db.close()
-    print(results)
-    return render_template("index.html", results=results)
+    print(type(results[0]))
+    return render_template("index.html", results=results[0])
 
 #add incident
 @app.route('/new-incident')
@@ -49,11 +190,9 @@ def new_incident():
     cursor.execute("select max(id) from incident")
     id=cursor.fetchone()
 
-    # Fetch Disaster ID
     cursor.execute("SELECT id FROM disaster WHERE name=%s", (type_of_calamity,))
     disaster_id = cursor.fetchone()
-    
-    # Fetch Locality ID
+
     cursor.execute("SELECT id FROM locality WHERE name=%s", (place,))
     locality_id = cursor.fetchone()
     
@@ -136,10 +275,7 @@ def update_shelter():
         return redirect("/successfully-entered-page")
    
 
-
-#-------------------Fund allocation and donation---------------------------
-#-----------------Donation---------------------
-@app.route('/donate-fund-indi', methods=['POST'])
+@app.route("/donate-fund-indi", methods=["POST"])
 def donate_fund_indi():
     name = request.form.get('name')
     contact = request.form.get('contact')
@@ -147,19 +283,18 @@ def donate_fund_indi():
     incident_name = request.form.get('incident_name')
     
     db, cursor = db_connection()
-    
-    # Fetch the next funding source ID
     cursor.execute("SELECT MAX(id) FROM funding_source")
     max_id = cursor.fetchone()[0]
     new_fund_id = max_id + 1 if max_id is not None else 1
-
-    # Fetch the incident ID
     cursor.execute("SELECT id FROM incident WHERE LOWER(incident_name) LIKE %s", (f"%{incident_name.lower()}%",))
+    cursor.execute(
+        "SELECT id FROM incident WHERE LOWER(incident_name) LIKE %s",
+        (f"%{incident_name.lower()}%",),
+    )
     iid = cursor.fetchone()
     if not iid:
         return "Could not add: Incident not found."
 
-    # Check if individual funding source already exists
     cursor.execute("SELECT id FROM funding_source WHERE name=%s", (name,))
     funding_id = cursor.fetchone()
 
@@ -169,9 +304,8 @@ def donate_fund_indi():
             "INSERT INTO funding_source (id, name, contact, type_of_organization) VALUES (%s, %s, %s,%s)",
             (new_fund_id, name, contact, "Individual")
         )
-        funding_id = (new_fund_id,)  # Set funding_id for later use
+        funding_id = (new_fund_id,)  
 
-    # Insert into incident_funding
     cursor.execute(
         "INSERT INTO incident_funding (iid, fid, std_amt_donated, amt_left) VALUES (%s, %s, %s, %s)",
         (iid[0], funding_id[0], std_amt_donated, std_amt_donated)
@@ -337,21 +471,22 @@ def contact_us():
 def locality_search():
     locality_info = None
     not_found_message = None
-    
-    if request.method == 'POST':
-        locality_name = request.form.get('locality_name')
-        
-        # Database query to check if locality exists
+
+
+    if request.method == "POST":
+        locality_name = request.form.get("locality_name")
+        print(locality_name)
         db, cursor = db_connection()
-        cursor.execute("select id from locality where name = %s",(locality_name,))
-        id=cursor.fetchone()
+        cursor.execute("select id from locality where name = %s", (locality_name,))
+        id = cursor.fetchone()
+        print(id)
         cursor.execute("SELECT * FROM incident WHERE lid = %s", (id[0],))
-        
-        locality_info = cursor.fetchall()  # Fetch one row of locality info if it exists
+
+        locality_info = cursor.fetchall() 
         db.close()
 
         if not locality_info:
-            not_found_message = "Sorry, locality not found."
+            not_found_message = "The locality you have entered is invalid or there are no active incidents there."
         print(locality_info)
     
     return render_template('locality_search.html', locality_info=locality_info, not_found_message=not_found_message)
