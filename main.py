@@ -65,10 +65,15 @@ def new_incident():
     )
     db.commit()
     db.close()
-    return redirect("/successfully_entered_page")
+    return redirect("/successfully-entered-page")
 
 
 #add and update shelter
+#get add shelter page
+@app.route('/add-shelter')
+def show_add_shelter():
+    return render_template("add_shelter.html")
+
 # post ()
 @app.route('/add-shelter', methods=['POST'])
 def add_shelter():
@@ -79,7 +84,7 @@ def add_shelter():
     max_capacity=request.form.get('max_capacity')
 
     print(type(max_capacity))
-
+    print("Veda")
     db, cursor = db_connection()
 
     # Fetch Locality ID
@@ -99,7 +104,7 @@ def add_shelter():
         )
         db.commit()
         db.close()
-        return redirect("/successfully_entered_page")
+        return redirect("/successfully-entered-page")
         
 
 @app.route('/update-shelter', methods=['POST'])
@@ -128,7 +133,7 @@ def update_shelter():
         )
         db.commit()
         db.close()
-        return redirect("/successfully_entered_page")
+        return redirect("/successfully-entered-page")
    
 
 
@@ -224,6 +229,13 @@ def donate_fund_org():
     db.commit()
     db.close()
     return redirect("/successfully-entered-page")
+
+#get fund alloc page
+@app.route('/fund-alloc')
+def show_fund_alloc():
+    return render_template("fund_alloc.html")
+
+
 
 @app.route('/fund-alloc', methods=['POST'])
 def fund_alloc():
