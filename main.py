@@ -12,7 +12,7 @@ from urllib.parse import urlparse
 app = Flask(__name__)
 
 def db_connection():
-    db = psycopg2.connect(database="permalist",user="postgres",password="B220584cs*",host="localhost",port="5432")
+    #db = psycopg2.connect(database="permalist",user="postgres",password="B220584cs*",host="localhost",port="5432")
     result = urlparse(os.getenv("POSTGRES_URI"))
     username = result.username
     password = result.password
@@ -146,9 +146,12 @@ ALTER TABLE "incident_volunteer_allotment" ADD FOREIGN KEY ("iid") REFERENCES "i
 
 ALTER TABLE "incident_volunteer_allotment" ADD FOREIGN KEY ("vid") REFERENCES "volunteer" ("id");
 
-INSERT INTO "locality" VALUES (1, 'kollam', 500, 'rural');
-INSERT INTO "disaster" VALUES(1, 'Flood', 'Caused usually by heavy rainfall or poor drainage management.', 'Disaster relief teams must assemble to assess the situation and organize proper drainage and rescue personnel.');
-INSERT INTO "incident" VALUES(1, 1, 1, NOW(), 'Severe rainfall in the monsoon season of 24', 'High', 'Actively monitoring', 1, 'Centre for Disaster Management Kerala', 5000, 10000, 50);
+INSERT INTO "locality" VALUES (1, 'Wayanad', 500, 'Tier 3');
+INSERT INTO "locality" VALUES (2, 'Kozhikode', 500, 'Tier 2');
+INSERT INTO "disaster" VALUES(1, 'Landslide', 'A landslide is a mass movement of material, such as rock, earth or debris, down a slope. They can happen suddenly or more slowly over long periods of time.', 'Disaster relief teams must assemble to assess the situation and organize proper drainage and rescue personnel.');
+INSERT INTO "disaster" VALUES(2, 'Infectious Disease Outbreak', 'In epidemiology, an outbreak is a sudden increase in occurrences of a disease when cases are in excess of normal expectancy for the location or season.', 'Disaster relief teams must assemble to assess the situation and organize proper drainage and rescue personnel.');
+INSERT INTO "incident" VALUES(1, 1, 1, NOW(), 'In the early hours of July 30, 2024, Chooralmala and Mundakkai villages in the district of Wayanad in Kerala were hit by devastating landslides triggered by torrential downpour. The massive landslides so far has claimed over 230 lives. According to the district administration, over 130 people are still missing as of August 13. This is the worst natural disaster to occur in Kerala since the 2018 floods', 'High', 'Actively monitoring', 0, 'Centre for Disaster Control, Kerala', 5000, 10000, 50);
+INSERT INTO "incident" VALUES(2, 2, 2, NOW(), 'It was confined to the village of Pazhur in the Chathamangalam gram panchayat of Kozhikode district. It claimed one life, on 5 Sept 2021. An outbreak began in Kozhikode district in Aug 2023, claiming two lives and infecting four other people by 16 Sept of that year.', 'High', 'Actively monitoring', 1, 'Centre for Disease Control, Kerala', 5000, 10000, 50);
                    """
     )
     db.commit()
@@ -160,8 +163,12 @@ def index():
     cursor.execute('SELECT * FROM incident where active=1')
     results = cursor.fetchall()
     db.close()
-    print(type(results[0]))
-    return render_template("index.html", results=results[0])
+    final = []
+    j = 1
+    for i in results:
+        final.append('#'+str(j)+': '+i[4])
+        j+=1
+    return render_template("index.html", results=final)
 
 #add incident
 @app.route('/new-incident')
