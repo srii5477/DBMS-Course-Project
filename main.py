@@ -23,141 +23,6 @@ def db_connection():
         database=database, user=username, password=password, host=hostname, port=port
     )
     cursor = db.cursor()
-    cursor.execute(
-        """
-                   DROP TABLE IF EXISTS Disaster, Locality, Funding_Source, Essential, Organization, Volunteer,
-Shelter, Emergency_Service, Incident, Incident_Funding, Incident_Resource_Allocation, Incident_Volunteer_Allotment ;
-
-CREATE TABLE "disaster" (
-  "id" integer PRIMARY KEY,
-  "name" text,
-  "description" text,
-  "protocol" text
-);
-
-CREATE TABLE "locality" (
-  "id" integer PRIMARY KEY,
-  "name" text,
-  "geographical_size" text,
-  "development_level" text
-);
-
-CREATE TABLE "funding_source" (
-  "id" integer PRIMARY KEY,
-  "name" text,
-  "contract_terms" text,
-  "renewal_period" integer,
-  "std_amt_donated" integer,
-  "contact" text,
-  "type_of_organization" text
-);
-
-CREATE TABLE "essential" (
-  "id" integer PRIMARY KEY,
-  "name" text,
-  "price_per_unit" integer,
-  "qty_in_stock" integer
-);
-
-CREATE TABLE "organization" (
-  "id" integer PRIMARY KEY,
-  "name" text,
-  "type_of_organization" text,
-  "contact" text,
-  "reachability" text
-);
-
-CREATE TABLE "volunteer" (
-  "id" integer PRIMARY KEY,
-  "name" text,
-  "contact" text,
-  "address" text,
-  "oid" integer
-);
-
-CREATE TABLE "shelter" (
-  "id" integer PRIMARY KEY,
-  "lid" integer,
-  "name" text,
-  "contact" text,
-  "address" text,
-  "max_capacity" integer,
-  "current_capacity" integer
-);
-
-CREATE TABLE "emergency_service" (
-  "id" integer PRIMARY KEY,
-  "lid" integer,
-  "name" text,
-  "contact" text,
-  "num_of_personnel" integer,
-  "speed_of_response" text
-);
-
-CREATE TABLE "incident" (
-  "id" integer PRIMARY KEY,
-  "did" integer,
-  "lid" integer,
-  "date_time" timestamp,
-  "name" text,
-  "description" text,
-  "severity" text,
-  "status" text,
-  "active" integer,
-  "monitoring_bureau" text,
-  "reqd_funds" integer,
-  "affected_population" integer,
-  "reqd_volunteers" integer
-);
-
-CREATE TABLE "incident_funding" (
-  "iid" integer,
-  "fid" integer
-);
-
-CREATE TABLE "incident_resource_allocation" (
-  "iid" integer,
-  "eid" integer
-);
-
-CREATE TABLE "incident_volunteer_allotment" (
-  "iid" integer,
-  "vid" integer
-);
-
-ALTER TABLE "volunteer" ADD FOREIGN KEY ("oid") REFERENCES "organization" ("id");
-
-ALTER TABLE "shelter" ADD FOREIGN KEY ("lid") REFERENCES "locality" ("id");
-
-ALTER TABLE "emergency_service" ADD FOREIGN KEY ("lid") REFERENCES "locality" ("id");
-
-ALTER TABLE "incident" ADD FOREIGN KEY ("did") REFERENCES "disaster" ("id");
-
-ALTER TABLE "incident" ADD FOREIGN KEY ("lid") REFERENCES "locality" ("id");
-
-ALTER TABLE "incident_funding" ADD FOREIGN KEY ("iid") REFERENCES "incident" ("id");
-
-ALTER TABLE "incident_funding" ADD FOREIGN KEY ("fid") REFERENCES "funding_source" ("id");
-
-ALTER TABLE "incident_resource_allocation" ADD FOREIGN KEY ("iid") REFERENCES "incident" ("id");
-
-ALTER TABLE "incident_resource_allocation" ADD FOREIGN KEY ("eid") REFERENCES "essential" ("id");
-
-ALTER TABLE "incident_volunteer_allotment" ADD FOREIGN KEY ("iid") REFERENCES "incident" ("id");
-
-ALTER TABLE "incident_volunteer_allotment" ADD FOREIGN KEY ("vid") REFERENCES "volunteer" ("id");
-
-INSERT INTO "locality" VALUES (1, 'Wayanad', 500, 'Tier 3');
-INSERT INTO "locality" VALUES (2, 'Kozhikode', 500, 'Tier 2');
-INSERT INTO "disaster" VALUES(1, 'Landslide', 'A landslide is a mass movement of material, such as rock, earth or debris, down a slope. They can happen suddenly or more slowly over long periods of time.', 'Disaster relief teams must assemble to assess the situation and organize proper drainage and rescue personnel.');
-INSERT INTO "disaster" VALUES(2, 'Infectious Disease Outbreak', 'In epidemiology, an outbreak is a sudden increase in occurrences of a disease when cases are in excess of normal expectancy for the location or season.', 'Disaster relief teams must assemble to assess the situation and organize proper drainage and rescue personnel.');
-INSERT INTO "incident" VALUES(1, 1, 1, NOW(), 'Wayanad Landslide', 'In the early hours of July 30, 2024, Chooralmala and Mundakkai villages in the district of Wayanad in Kerala were hit by devastating landslides triggered by torrential downpour. The massive landslides so far has claimed over 230 lives. According to the district administration, over 130 people are still missing as of August 13. This is the worst natural disaster to occur in Kerala since the 2018 floods', 'High', 'Actively monitoring', 0, 'Centre for Disaster Control, Kerala', 5000, 10000, 50);
-INSERT INTO "incident" VALUES(2, 2, 2, NOW(), '2021 Nipah Outbreak', 'It was confined to the village of Pazhur in the Chathamangalam gram panchayat of Kozhikode district. It claimed one life, on 5 Sept 2021. An outbreak began in Kozhikode district in Aug 2023, claiming two lives and infecting four other people by 16 Sept of that year.', 'High', 'Actively monitoring', 1, 'Centre for Disease Control, Kerala', 5000, 10000, 50);
-INSERT INTO "disaster" VALUES(3, 'Flood', 'A mass movement of water induced by heavy rainfall');
-INSERT INTO "locality" VALUES (3, 'Trivandrum', 500, 'Tier 2');
-                   """
-    )
-    db.commit()
     return db, cursor
 
 @app.route('/')
@@ -245,17 +110,22 @@ def add_shelter():
     cursor.execute("SELECT id FROM locality WHERE name=%s", (place,))
     locality_id = cursor.fetchone()
     
-    if(not locality_id):
+    if not locality_id:
         return "Sorry locality not found"
     else:
         # Insert into shleter table
         cursor.execute("select max(id) from shelter")
         id=cursor.fetchone()
-        cursor.execute(
+        if id[0]==None:
+            cursor.execute('INSERT INTO shelter VALUES (%s, %s, %s, %s, %s, %s, %s)',
+            (1,locality_id[0], name, contact, address, max_capacity, str(0),
+            ))
+        else:
+            cursor.execute(
             'INSERT INTO shelter VALUES (%s, %s, %s, %s, %s, %s, %s)',
             (id[0]+1,locality_id[0], name, contact, address, max_capacity, str(0),
             )
-        )
+            )
         db.commit()
         db.close()
         return redirect("/successfully-entered-page")
@@ -289,6 +159,19 @@ def update_shelter():
         db.close()
         return redirect("/successfully-entered-page")
    
+@app.route("/update-shelter-capacity", methods=["GET", "PATCH"])
+def update_shelter_capacity():
+    shelter_id = int(request.args.get('shelter_id'))
+    db, cursor = db_connection()
+    cursor.execute('SELECT * FROM shelter WHERE id=%s', (shelter_id,))
+    result = cursor.fetchone()
+    if result[6]==result[5]:
+        return 'Cant allocate you in this shelter. Please select another.'
+    else:
+        cursor.execute('UPDATE shelter SET current_capacity=current_capacity+1 WHERE id=%s;', (shelter_id,))
+    db.commit()
+    db.close()
+    return redirect("/successfully-entered-page")
 
 @app.route("/donate-fund-indi", methods=["POST"])
 def donate_fund_indi():
@@ -301,20 +184,15 @@ def donate_fund_indi():
     cursor.execute("SELECT MAX(id) FROM funding_source")
     max_id = cursor.fetchone()[0]
     new_fund_id = max_id + 1 if max_id is not None else 1
-    cursor.execute("SELECT id FROM incident WHERE LOWER(incident_name) LIKE %s", (f"%{incident_name.lower()}%",))
-    cursor.execute(
-        "SELECT id FROM incident WHERE LOWER(incident_name) LIKE %s",
-        (f"%{incident_name.lower()}%",),
-    )
+    cursor.execute("SELECT id FROM incident WHERE name LIKE %s", (incident_name,))
     iid = cursor.fetchone()
     if not iid:
         return "Could not add: Incident not found."
-
+    cursor.execute("UPDATE incident SET reqd_funds = reqd_funds-%s WHERE id=%s", (std_amt_donated, iid))
     cursor.execute("SELECT id FROM funding_source WHERE name=%s", (name,))
     funding_id = cursor.fetchone()
 
     if funding_id is None:
-        # Insert new funding source if not found
         cursor.execute(
             "INSERT INTO funding_source (id, name, contact, type_of_organization) VALUES (%s, %s, %s,%s)",
             (new_fund_id, name, contact, "Individual")
@@ -343,33 +221,28 @@ def donate_fund_org():
 
     db, cursor = db_connection()
 
-    # Get the next funding source ID
     cursor.execute("SELECT MAX(id) FROM funding_source")
     max_id = cursor.fetchone()[0]
     if(not max_id):
         new_fund_id=1
     new_fund_id = max_id + 1 
 
-    # Fetch the incident ID
-    cursor.execute("SELECT id FROM incident WHERE LOWER(incident_name) LIKE %s", (f"%{incident_name.lower()}%",))
+
+    cursor.execute("SELECT id FROM incident WHERE name LIKE %s", (incident_name,))
     iid = cursor.fetchone()
     if not iid:
         return "Incident not found, could not add funding."
     
-    # Check if funding source already exists
     cursor.execute("SELECT id FROM funding_source WHERE name=%s", (name,))
     funding_id = cursor.fetchone()
 
     if funding_id is None:
-        # Insert new funding source if not found
         cursor.execute(
             "INSERT INTO funding_source (id, name, contract_terms, renewal_period, contact, type_of_organization) "
             "VALUES (%s, %s, %s, %s, %s, %s)",
             (new_fund_id, name, contract_terms, renewal_period, contact, type_of_organisation)
         )
-        funding_id = (new_fund_id,)  # Set funding_id for later use
-
-    # Insert into incident_funding
+        funding_id = (new_fund_id,)  
     cursor.execute(
         "INSERT INTO incident_funding (iid, fid, std_amt_donated, amt_left) VALUES (%s, %s, %s, %s)",
         (iid[0], funding_id[0], std_amt_donated, std_amt_donated)
@@ -389,18 +262,16 @@ def show_fund_alloc():
 @app.route('/fund-alloc', methods=['POST'])
 def fund_alloc():
     incident_name = request.form.get('incident_name')
-    fund = request.form.get('fund') # Ensure fund is treated as a numeric value
+    fund = request.form.get('fund') 
     
     db, cursor = db_connection()
     
-    # Fetch the incident ID
-    cursor.execute("SELECT id FROM incident WHERE LOWER(incident_name) LIKE %s", (f"%{incident_name.lower()}%",))
+    cursor.execute("SELECT id FROM incident WHERE name LIKE %s", (incident_name,))
     iid = cursor.fetchone()
     
     if not iid:
         return "Incident not found"
     
-    # Check if required funds are sufficient
     cursor.execute("SELECT reqd_funds FROM incident WHERE id=%s", (iid[0],))
     result = cursor.fetchone()
     print(type(result))
@@ -408,33 +279,24 @@ def fund_alloc():
     if result[0] == 0 or result[0] < int(fund):
         return "Sorry, cannot allocate the requested fund amount"
 
-    # Fetch funding sources linked to the incident
     cursor.execute("SELECT fid FROM incident_funding WHERE iid=%s", (iid[0],))
     funding_sources = cursor.fetchall()
 
     for funding_source in funding_sources:
-        fid = funding_source[0]  # Extract funding source ID from tuple
-        
-        # Get the amount left in each funding source
+        fid = funding_source[0]
         cursor.execute("SELECT amt_left FROM incident_funding WHERE fid=%s and iid=%s", (fid,iid[0]))
         amt_left = cursor.fetchone()[0]
-        
-        # Calculate remaining funds
         temp = int(fund) - int(amt_left)
         
         if temp >= 0:
-            # If funds are fully used, delete the allocation entry
             cursor.execute("DELETE FROM incident_funding WHERE fid=%s AND iid=%s", (fid, iid[0]))
         else:
-            # Otherwise, update the remaining amount in the allocation
             cursor.execute(
                 "UPDATE incident_funding SET amt_left=%s WHERE fid=%s AND iid=%s",
                 (int(int(amt_left) - int(fund)), fid, iid[0])
             )
-            fund = 0  # Set remaining fund to zero since allocation is complete
-            break  # Stop looping since the allocation is satisfied
-    
-        # Update fund variable for the next iteration if needed
+            fund = 0  
+            break  
         fund = temp
 
     db.commit()
@@ -485,8 +347,8 @@ def contact_us():
 @app.route('/locality-search', methods=['GET', 'POST'])
 def locality_search():
     locality_info = None
-    not_found_message = None
-
+    not_found_message = ""
+    locality_shelters = None
 
     if request.method == "POST":
         locality_name = request.form.get("locality_name")
@@ -498,11 +360,15 @@ def locality_search():
         cursor.execute("SELECT * FROM incident WHERE lid = %s", (id[0],))
 
         locality_info = cursor.fetchall() 
-        db.close()
 
         if not locality_info:
             not_found_message = "The locality you have entered is invalid or there are no active incidents there."
         print(locality_info)
+        cursor.execute("select * from shelter where lid=%s", (id[0],))
+        locality_shelters = cursor.fetchall()
+        db.close()
+        if not locality_shelters:
+            not_found_message += "No shelters were found in this locality."
     
-    return render_template('locality_search.html', locality_info=locality_info, not_found_message=not_found_message)
+    return render_template('locality_search.html', locality_info=locality_info, not_found_message=not_found_message, locality_shelters=locality_shelters)
     

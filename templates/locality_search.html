@@ -23,17 +23,39 @@
                 <p><strong>ID:</strong> {{ locality[0] }}</p>
                 <p><strong>DID:</strong> {{ locality[1] }}</p>
                 <p><strong>LID:</strong> {{ locality[2] }}</p>
-                <p><strong>Incident name:</strong> {{ locality[12] }}</p>
+                <p><strong>Incident name:</strong> {{ locality[4] }}</p>
                 <p><strong>Date:</strong> {{ locality[3] }}</p>
-                <p><strong>Description:</strong> {{ locality[4] }}</p>
-                <p><strong>Severity:</strong> {{ locality[5] }}</p>
-                <p><strong>Status:</strong> {{ locality[6] }}</p>
-                <p><strong>Active:</strong> {{ locality[7] }}</p>
-                <p><strong>Monitoring Bureau:</strong> {{ locality[8] }}</p>
-                <p><strong>Required Funds:</strong> {{ locality[9] }}</p>
-                <p><strong>Affected Population:</strong> {{ locality[10] }}</p>
-                <p><strong>Required Volunteers:</strong> {{ locality[11] }}</p>
+                <p><strong>Description:</strong> {{ locality[5] }}</p>
+                <p><strong>Severity:</strong> {{ locality[6] }}</p>
+                <p><strong>Status:</strong> {{ locality[7] }}</p>
+                <p><strong>Active:</strong> {{ locality[8] }}</p>
+                <p><strong>Monitoring Bureau:</strong> {{ locality[9] }}</p>
+                <p><strong>Required Funds:</strong> {{ locality[10] }}</p>
+                <p><strong>Affected Population:</strong> {{ locality[11] }}</p>
+                <p><strong>Required Volunteers:</strong> {{ locality[12] }}</p>
             </div>
+            {% endfor %}
+        {% elif not_found_message %}
+            <p>{{ not_found_message }}</p>
+        {% endif %}
+    </div>
+    <div>
+        {% if locality_shelters %}
+            <h3>Shelters:</h3>
+            {% for locality in locality_shelters %}
+            <div style="border: 1px solid black; padding: 10px; margin-bottom: 10px;">
+
+                <p><strong>Name:</strong> {{ locality[2] }}</p>
+                <p><strong>Contact:</strong> {{ locality[3] }}</p>
+                <p><strong>Address:</strong> {{ locality[4] }}</p>
+                <p><strong>Maximum Capacity:</strong> {{ locality[5] }}</p>
+                <p><strong>Current Capacity:</strong> {{ locality[6] }}</p>
+                
+            </div>
+            <form method="PATCH" action="/update-shelter-capacity">
+                <input type="hidden" name="shelter_id" id="shelter_id" value="{{ locality[0] }}"/>
+                <button type="submit">Allocate yourself to this shelter.</button>
+            </form>
             {% endfor %}
         {% elif not_found_message %}
             <p>{{ not_found_message }}</p>
