@@ -18,7 +18,7 @@
       <div class="container-fluid">
           <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
               <a class="navbar-brand" href="#">DMS</a>
-            
+
               <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
               </button>
@@ -35,9 +35,6 @@
                     </form>
                     </ul>
                     <ul class="navbar-nav ml-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Relief Camp</a>
-                        </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
                                 Map
@@ -111,7 +108,7 @@
                   <a href="/locality-search" class="nav-item">Locality Search</a>
                   <a href="/donate-resource" class="nav-item">Donate Resource</a>
                 </div>
-                
+
                 <div class="incident-ticker">
                   <div class="ticker-content">
                     {% for result in results %}
@@ -177,9 +174,9 @@
                       <div class="col"></div>
                   </div>
               </div>
-          
-<!--        -->
-          
+
+
+         <!-------section three------>
           <div class="sectionDark">
             <div class="row">
                 <div class="col-sm-12">
@@ -193,12 +190,11 @@
                         </div>
                         <div class="col-sm-12 col-lg-6">
                             <p class = "para_ref_1">DONATION</p>
-                            <p class = "para_ref"> Donating to disaster management efforts is an impactful way to support communities in need when they need it most. Your contributions help fund essential resources like food, water, medical aid, and rebuilding materials, ensuring that affected families receive the help they require to recover and thrive. Every donation, big or small, fuels relief operations and provides hope in times of crisis. Make a difference today—donate and be a lifeline for those in need.</p>
-                            <div class="col-sm-12 col-lg-6">
-                    <div class="coolStuffRapper">
-                        <button type="button" class="btn-lg coolStuffRapper" data-toggle="modal" data-target="#coolStuffModal">Donate</button>
-                  </div>
-                </div>
+                            <p class = "para_ref"> Donating to disaster management efforts is an impactful way to support communities in need when they need it most. Your contributions help fund essential resources like food, water, medical aid, and rebuilding materials, ensuring that affected families receive the help they require to recover and thrive. Every donation, big or small, fuels relief operations and provides hope in times of crisis. Make a difference today, donate and be a lifeline for those in need.</p>
+                            <div class="coolStuffRapper">
+                                <button type="button" class="btn-lg coolStuffRapper" data-toggle="modal" data-target="#coolStuffModal">Donate</button>
+                            </div>
+                
                         </div>
                     </div>
                   </div>
@@ -206,35 +202,29 @@
               
               </div>
           
-          <div>
-            <form action="/view-resource-allocations" method="GET">
-              <label for="incident">Enter an incident for which you want to see the resource allocations.</label>
-              <input type="text" name="incident" id="incident"/>
-              <button type="submit">Go.</button>
-            </form>
-          </div>
           
+<!----------- FOOTER----------->
           <footer class="footer bg-inverse">
-            <div class="container-fluid flex-wrap">
+            <div class="container-fluid">
                   <div class="row">
                     <div class="col-sm-12 col-lg-3">
-                      <img class="img-fluid footerImg" src="../static/css/loogo.webp">
+                      <img class="img-fluid footerImg" src="../static/css/Disaster-Management-Banner-e1631759853834.png">
                       </div>
-                      <div class="row">
-                      <div class="col-sm-12 col-sm-9">
-                            <p class="para1">To know more login and come with us to explore more of it.We will be really glad to guide you and know more. <p>
-                          <p class="para2">Together, we can create safer, stronger communities.</p>
-                          <p class="para2">Join us in our mission to provide hope, relief, and resilience when it matters most</p>
+                     <!------ <div class="row">------>
+                          
+                      <div class="col-sm-12 col-lg-6">
+                          <p class="para1">To know more login and come with us to explore more of it. We will be really glad to guide you and know more. Together, we can create safer, stronger communities. Join us in our mission to provide hope, relief, and resilience when it matters most </p>
                           <ul>
                             <li class="click"><a href="https://www.ready.gov/business/resources/resource-management"><b>Quick Resource</b></a></li>
                               <li class="click"><a href="https://www.google.com/aclk?sa=l&ai=DChcSEwjukM6rs8-JAxWipGYCHZwCJ5YYABACGgJzbQ&ae=2&aspm=1&co=1&ase=2&gclid=Cj0KCQiArby5BhCDARIsAIJvjIRElGY_0rQnV6PMeX2aq0gKFvyOwVTRNBNt444tpTQ3IfO4b97mBAMaAvN9EALw_wcB&sig=AOD64_0UOq0yLjaslS239_1tvkNx9mfCvw&q&nis=4&adurl&ved=2ahUKEwjn0cers8-JAxWEzTgGHTD0Dg0Q0Qx6BAgNEAM"><b>UNICEF</b></a></li>
                                <li class="click"><a href="https://in.linkedin.com/company/national-ngo-s-confederation"><b>National NGO</b></a></li>
                           </ul>
                       </div>
-              </div>
+                    </div>
                 </div>
-            </div>
           </footer>
+          
+          
           
             <div class="modal fade" id="coolStuffModall" tabindex="-1" aria-labelledby="coolStuffLabel" aria-hidden="true">
               <div class="modal-dialog">
@@ -263,7 +253,7 @@
                                     <label for="forContact">Phone Number</label>
                                     <input type="number" class="form-control" id="forname" placeholder="contact">
                                   </div>
-                                  
+
                                 </form>
                             </div>
                         </div>
@@ -292,10 +282,10 @@
                             <div class="modalFormWrapper">
                                 <form>
                                   <div class="form-group">
-                                    <label for="forName">How do you want to donate as?</label>
+                                    <label for="forName">In which role are you donating?</label>
                                   </div>
-                              
-                                  
+
+
                                 </form>
                             </div>
                         </div>
@@ -339,7 +329,7 @@
                                   <label for="forContact">Phone Number</label>
                                   <input type="number" class="form-control" id="forname" placeholder="contact">
                                 </div>
-                                
+
                               </form>
                           </div>
                       </div>
@@ -352,7 +342,7 @@
               </div>
             </div>
           </div>
-          
+
 
           <div class="modal fade" id="donate_as_individual" tabindex="-1" aria-labelledby="donate_as_individual" aria-hidden="true">
             <div class="modal-dialog">
@@ -387,21 +377,21 @@
                               </div>
                               <button type="submit" class="btn btn-secondary">Submit</button>
                           </form>
-                          
+
                           </div>
                       </div>
                   </div>
               </div>
           </div>
                 <div class="modal-footer">
-                  
+
                 </div>
               </div>
             </div>
           </div>
 
 
-      
+
           <div class="modal fade" id="donate_as_org" tabindex="-1" aria-labelledby="donate_as_org" aria-hidden="true">
             <div class="modal-dialog">
               <div class="modal-content">
@@ -456,15 +446,11 @@
               </div>
             </div>
           </div>
-          
-      
 
-
-   
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
      <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js" integrity="sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+" crossorigin="anonymous"></script>
     <script src="bootstrap-4.6.2-dist/js/bootstrap.min.js"></script>
-    
+
   </body>
 </html>
