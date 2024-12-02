@@ -35,21 +35,26 @@
         display: inline-block;
         margin: 0 auto;
       }
+      .loader {
+        border: 16px solid #f3f3f3; /* Light grey */
+        border-top: 16px solid #3498db; /* Blue */
+        border-radius: 50%;
+        width: 120px;
+        height: 120px;
+        animation: spin 2s linear infinite;
+        margin-left: 45%;
+      }
+      
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
     </style>
     <body>
       <div class="card">
-      <div style="border-radius:200px; height:200px; width:200px; background: #F8FAF5; margin:0 auto;">
-        <i class="checkmark">✓</i>
+        <h1>Loading.. you'll be automatically directed to the success page if the admin authorizes your donation.</h1> 
+        <div class="loader"></div> 
+        <p>Your request is being verified by the admin.</p>
       </div>
-        <h1>Success</h1> 
-        <p>Your request has been successfully processed!</p>
-        <a href="/">Go back.</a>
-      </div>
-      <script>
-        setTimeout(function(){
-            window.location.href = '{{redirect_url}}';
-        }, 2000);
-    </script>
     </body>
 </html>
-

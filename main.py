@@ -1,8 +1,9 @@
 
-from flask import Flask, render_template, redirect, request
+from flask import Flask, render_template, redirect, request, make_response
 import psycopg2
 from dotenv import load_dotenv
 import os
+import time
 
 load_dotenv()
 
@@ -102,18 +103,13 @@ def add_shelter():
     address = request.form.get('address')
     max_capacity=request.form.get('max_capacity')
 
-    print(type(max_capacity))
-    print("Veda")
     db, cursor = db_connection()
-
-    # Fetch Locality ID
     cursor.execute("SELECT id FROM locality WHERE name=%s", (place,))
     locality_id = cursor.fetchone()
     
     if not locality_id:
         return "Sorry locality not found"
     else:
-        # Insert into shleter table
         cursor.execute("select max(id) from shelter")
         id=cursor.fetchone()
         if id[0]==None:
@@ -173,7 +169,15 @@ def update_shelter_capacity():
     db.close()
     return redirect("/successfully-entered-page")
 
-@app.route("/donate-fund-indi", methods=["POST"])
+
+@app.route("/await-admin-approval", methods=["GET"])
+def await_admin_approval():
+    response = make_response(render_template('loading.html'))
+    response.headers["Refresh"] = "2; url=/successfully-entered-page"
+    return response
+    
+    
+@app.route("/donate-fund-individual", methods=["POST"])
 def donate_fund_indi():
     name = request.form.get('name')
     contact = request.form.get('contact')
@@ -206,7 +210,7 @@ def donate_fund_indi():
 
     db.commit()
     db.close()
-    return redirect("/successfully-entered-page")
+    return redirect("/await-admin-approval")
 
 
 @app.route('/donate-fund-org', methods=['POST'])
@@ -247,70 +251,65 @@ def donate_fund_org():
         "INSERT INTO incident_funding (iid, fid, std_amt_donated, amt_left) VALUES (%s, %s, %s, %s)",
         (iid[0], funding_id[0], std_amt_donated, std_amt_donated)
     )
-    
+    cursor.execute(
+        "UPDATE incident SET reqd_funds = reqd_funds-%s WHERE id=%s", (std_amt_donated, iid[0])
+    )
     db.commit()
     db.close()
-    return redirect("/successfully-entered-page")
+    return redirect("/await-admin-approval")
 
 #get fund alloc page
-@app.route('/fund-alloc')
-def show_fund_alloc():
-    return render_template("fund_alloc.html")
+# @app.route('/fund-alloc')
+# def show_fund_alloc():
+#     return render_template("fund_alloc.html")
 
 
 
-@app.route('/fund-alloc', methods=['POST'])
-def fund_alloc():
-    incident_name = request.form.get('incident_name')
-    fund = request.form.get('fund') 
+# @app.route('/fund-alloc', methods=['POST'])
+# def fund_alloc():
+#     incident_name = request.form.get('incident_name')
+#     fund = request.form.get('fund') 
     
-    db, cursor = db_connection()
+#     db, cursor = db_connection()
     
-    cursor.execute("SELECT id FROM incident WHERE name LIKE %s", (incident_name,))
-    iid = cursor.fetchone()
+#     cursor.execute("SELECT id FROM incident WHERE name LIKE %s", (incident_name,))
+#     iid = cursor.fetchone()
     
-    if not iid:
-        return "Incident not found"
+#     if not iid:
+#         return "Incident not found"
     
-    cursor.execute("SELECT reqd_funds FROM incident WHERE id=%s", (iid[0],))
-    result = cursor.fetchone()
-    print(type(result))
+#     cursor.execute("SELECT reqd_funds FROM incident WHERE id=%s", (iid[0],))
+#     result = cursor.fetchone()
+#     print(type(result))
 
-    if result[0] == 0 or result[0] < int(fund):
-        return "Sorry, cannot allocate the requested fund amount"
+#     if result[0] == 0 or result[0] < int(fund):
+#         return "Sorry, cannot allocate the requested fund amount"
 
-    cursor.execute("SELECT fid FROM incident_funding WHERE iid=%s", (iid[0],))
-    funding_sources = cursor.fetchall()
+#     cursor.execute("SELECT fid FROM incident_funding WHERE iid=%s", (iid[0],))
+#     funding_sources = cursor.fetchall()
 
-    for funding_source in funding_sources:
-        fid = funding_source[0]
-        cursor.execute("SELECT amt_left FROM incident_funding WHERE fid=%s and iid=%s", (fid,iid[0]))
-        amt_left = cursor.fetchone()[0]
-        temp = int(fund) - int(amt_left)
+#     for funding_source in funding_sources:
+#         fid = funding_source[0]
+#         cursor.execute("SELECT amt_left FROM incident_funding WHERE fid=%s and iid=%s", (fid,iid[0]))
+#         amt_left = cursor.fetchone()[0]
+#         temp = int(fund) - int(amt_left)
         
-        if temp >= 0:
-            cursor.execute("DELETE FROM incident_funding WHERE fid=%s AND iid=%s", (fid, iid[0]))
-        else:
-            cursor.execute(
-                "UPDATE incident_funding SET amt_left=%s WHERE fid=%s AND iid=%s",
-                (int(int(amt_left) - int(fund)), fid, iid[0])
-            )
-            fund = 0  
-            break  
-        fund = temp
+#         if temp >= 0:
+#             cursor.execute("DELETE FROM incident_funding WHERE fid=%s AND iid=%s", (fid, iid[0]))
+#         else:
+#             cursor.execute(
+#                 "UPDATE incident_funding SET amt_left=%s WHERE fid=%s AND iid=%s",
+#                 (int(int(amt_left) - int(fund)), fid, iid[0])
+#             )
+#             fund = 0  
+#             break  
+#         fund = temp
 
-    db.commit()
-    db.close()
-    return redirect("/successfully-entered-page")
-
-    
+#     db.commit()
+#     db.close()
+#     return redirect("/successfully-entered-page")
 
 
-
-
-
-
-# Volunteer signup
 @app.route('/volunteer-signup', methods=['POST'])
 def volunteer_signup():
     name = request.form.get('name')

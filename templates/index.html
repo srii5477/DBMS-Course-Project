@@ -107,7 +107,7 @@
                   <a href="/add-shelter" class="nav-item">Add Shelter</a>
                   <a href="/new-incident" class="nav-item">Add Incident</a>
                   <!-- <a href="/donate-funds" class="nav-item">Donate Funds</a> -->
-                  <a href="/fund-alloc" class="nav-item">Fund Allocation</a>
+                  <!-- <a href="/fund-alloc" class="nav-item">Fund Allocation</a> -->
                   <a href="/locality-search" class="nav-item">Locality Search</a>
                 </div>
                 
@@ -334,7 +334,7 @@
                 </div>
             </div>
                   <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal" name="individual" data-toggle="modal" data-target="#donate_as_indi">Donate as individual</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" name="individual" data-toggle="modal" data-target="#donate_as_individual">Donate as individual</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal" name="organisation" data-toggle="modal" data-target="#donate_as_org">Donate as organisation</button>
                   </div>
                 </div>
@@ -385,7 +385,7 @@
           </div>
           
 
-          <div class="modal fade" id="donate_as_indi" tabindex="-1" aria-labelledby="donate_as_indi" aria-hidden="true">
+          <div class="modal fade" id="donate_as_individual" tabindex="-1" aria-labelledby="donate_as_individual" aria-hidden="true">
             <div class="modal-dialog">
               <div class="modal-content">
                 <div class="modal-header">
@@ -399,7 +399,7 @@
                       <div class="row">
                           <div class="col-sm-12">
                           <div class="modalFormWrapper">
-                            <form action="/donate-fund-indi" method="POST">
+                            <form action="/donate-fund-individual" method="POST">
                               <div class="form-group">
                                   <label for="forName">Name</label>
                                   <input type="text" class="form-control" id="name" name="name" placeholder="name" required>
