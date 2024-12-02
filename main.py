@@ -29,6 +29,19 @@ def db_connection():
 @app.route('/')
 def index():
     db, cursor = db_connection()
+#     cursor.execute("""INSERT INTO emergency_service VALUES(1, 1, 'Ambulance', '12345', 120, 'Very fast'),
+#                    (2, 1, 'Police Station', '23323', 120, 'Moderately fast'),
+#                    (3, 1, 'Fire Station', '34567', 140, 'Fast'),
+# (4, 1, 'Rescue Team', '45678', 160, 'Reliable'),
+# (5, 1, 'Poison Control', '56789', 180, 'Prompt'),
+# (6, 1, 'Disaster Relief', '67890', 200, 'Dependable'),
+# (7, 1, 'Marine Patrol', '78901', 130, 'Efficient'),
+# (8, 1, 'Mountain Rescue', '89012', 110, 'Quick response'),
+# (9, 1, 'Animal Control', '90123', 150, 'Slow and understaffed'),
+# (10, 1, 'Flood Relief', '01234', 170, 'Highly efficient');
+                   
+#                    """)
+#     db.commit()
     cursor.execute('SELECT * FROM "incident" where active=1')
     results = cursor.fetchall()
     print(results)
@@ -258,57 +271,17 @@ def donate_fund_org():
     db.close()
     return redirect("/await-admin-approval")
 
-#get fund alloc page
-# @app.route('/fund-alloc')
-# def show_fund_alloc():
-#     return render_template("fund_alloc.html")
-
-
-
-# @app.route('/fund-alloc', methods=['POST'])
-# def fund_alloc():
-#     incident_name = request.form.get('incident_name')
-#     fund = request.form.get('fund') 
-    
-#     db, cursor = db_connection()
-    
-#     cursor.execute("SELECT id FROM incident WHERE name LIKE %s", (incident_name,))
-#     iid = cursor.fetchone()
-    
-#     if not iid:
-#         return "Incident not found"
-    
-#     cursor.execute("SELECT reqd_funds FROM incident WHERE id=%s", (iid[0],))
-#     result = cursor.fetchone()
-#     print(type(result))
-
-#     if result[0] == 0 or result[0] < int(fund):
-#         return "Sorry, cannot allocate the requested fund amount"
-
-#     cursor.execute("SELECT fid FROM incident_funding WHERE iid=%s", (iid[0],))
-#     funding_sources = cursor.fetchall()
-
-#     for funding_source in funding_sources:
-#         fid = funding_source[0]
-#         cursor.execute("SELECT amt_left FROM incident_funding WHERE fid=%s and iid=%s", (fid,iid[0]))
-#         amt_left = cursor.fetchone()[0]
-#         temp = int(fund) - int(amt_left)
-        
-#         if temp >= 0:
-#             cursor.execute("DELETE FROM incident_funding WHERE fid=%s AND iid=%s", (fid, iid[0]))
-#         else:
-#             cursor.execute(
-#                 "UPDATE incident_funding SET amt_left=%s WHERE fid=%s AND iid=%s",
-#                 (int(int(amt_left) - int(fund)), fid, iid[0])
-#             )
-#             fund = 0  
-#             break  
-#         fund = temp
-
-#     db.commit()
-#     db.close()
-#     return redirect("/successfully-entered-page")
-
+@app.route('/find-emergency-services', methods=['GET'])
+def find_emergency_services():
+    locality = request.args.get('locality')
+    print(locality)
+    db, cursor = db_connection()
+    cursor.execute('select id from locality where name=%s', (locality,))
+    result = cursor.fetchone()
+    cursor.execute('select * from emergency_service where lid=%s', (result,))
+    contacts = cursor.fetchall()
+    print(contacts)
+    return render_template('contact.html', contacts=contacts)
 
 @app.route('/volunteer-signup', methods=['POST'])
 def volunteer_signup():
