@@ -42,14 +42,14 @@ def index():
                    
 #                    """)
 #     db.commit()
-    cursor.execute('SELECT * FROM "incident" where active=1')
+    cursor.execute('SELECT * FROM "incident"')
     results = cursor.fetchall()
     print(results)
     db.close()
     final = []
     j = 1
     for i in results:
-        final.append('#'+str(j)+': '+i[4])
+        final.append(i[4])
         j+=1
     return render_template("index.html", results=final)
 
@@ -60,9 +60,9 @@ def show_new_incident_form():
 # post
 @app.route('/new-incident', methods=['POST'])
 def new_incident():
-    type_of_calamity = request.form.get('type_of_calamity')
+    type_of_calamity = request.form.get('type_of_calamity').title()
     date = request.form.get('date')
-    place = request.form.get('place')
+    place = request.form.get('place').title()
     description = request.form.get('description')
     severity = request.form.get('severity')
     status = request.form.get('status')
@@ -110,7 +110,7 @@ def show_add_shelter():
 # post ()
 @app.route('/add-shelter', methods=['POST'])
 def add_shelter():
-    place = request.form.get('place')
+    place = request.form.get('place').title()
     name = request.form.get('name')
     contact=request.form.get('contact')
     address = request.form.get('address')
@@ -142,7 +142,7 @@ def add_shelter():
 
 @app.route('/update-shelter', methods=['POST'])
 def update_shelter():
-    place = request.form.get('place')
+    place = request.form.get('place').title()
     name = request.form.get('name')
     contact=request.form.get('contact')
     no_new_ppl = request.form.get('no_new_ppl')
@@ -273,7 +273,7 @@ def donate_fund_org():
 
 @app.route('/find-emergency-services', methods=['GET'])
 def find_emergency_services():
-    locality = request.args.get('locality')
+    locality = request.args.get('locality').title()
     print(locality)
     db, cursor = db_connection()
     cursor.execute('select id from locality where name=%s', (locality,))
@@ -323,7 +323,7 @@ def locality_search():
     locality_shelters = None
 
     if request.method == "POST":
-        locality_name = request.form.get("locality_name")
+        locality_name = request.form.get("locality_name").title()
         print(locality_name)
         db, cursor = db_connection()
         cursor.execute("select id from locality where name = %s", (locality_name,))
@@ -344,3 +344,79 @@ def locality_search():
     
     return render_template('locality_search.html', locality_info=locality_info, not_found_message=not_found_message, locality_shelters=locality_shelters)
     
+@app.route('/donate-resource', methods=['GET'])
+def donate_resource():
+    db, cursor = db_connection()
+    # cursor.execute("""
+    #                 insert into essential values(1, 'Bread', 5, 0),
+    #                 (2, 'Water', 1, 50),
+    #                 (3, 'Noodles', 2, 100),
+    #                 (4, 'Sanitary Pad', 10, 30),
+    #                 (5, 'Rice', 3, 200),
+    #                 (6, 'Soap', 2, 75),
+    #                 (7, 'Toothpaste', 3, 40),
+    #                 (8, 'Milk', 4, 25),
+    #                 (9, 'Sugar', 2, 60),
+    #                 (10, 'Salt', 1, 80);
+    #                """)
+    # db.commit()
+    cursor.execute('select name from essential;')
+    results = cursor.fetchall()
+    db.close()
+    return render_template('donate_resource.html', results=results)
+
+@app.route('/allocate-resource', methods=['POST'])
+def allocate_resource():
+    db, cursor = db_connection()
+    # cursor.execute("""
+    #                drop table if exists incident_resource_allocation;
+    #                CREATE TABLE "incident_resource_allocation" (
+    #                 "iid" integer,
+    #                 "eid" integer,
+    #                 "qty_donated" integer
+    #                );
+    #                ALTER TABLE "incident_resource_allocation" ADD FOREIGN KEY ("iid") REFERENCES "incident" ("id");
+
+    #                ALTER TABLE "incident_resource_allocation" ADD FOREIGN KEY ("eid") REFERENCES "essential" ("id");
+    #                """)
+    # db.commit()
+    incident_name = request.form.get('incident_name').title()
+    essential_name = request.form.get('essential_name').title()
+    qty_donated = int(request.form.get('quantity'))
+    #check if incident exists, if essential exists and if so add the relevant details
+    #into the incident_resource_allocation table
+    cursor.execute('select id from incident where name=%s', (incident_name,))
+    result = cursor.fetchone()
+    if result == None:
+        return "Such an incident doesn't exist. Try again."
+    iid = result
+    cursor.execute('select id from essential where name=%s', (essential_name,))
+    result = cursor.fetchone()
+    if result == None:
+        return 'Such an essential does not exist in our catalogue. Try another one.'
+    eid = result
+    cursor.execute('insert into incident_resource_allocation values(%s, %s, %s);', (iid, eid, qty_donated))
+    db.commit()
+    db.close()
+    
+    return redirect("/await-admin-approval")
+
+@app.route('/view-resource-allocations', methods=['GET'])
+def view_resource_allocations():
+    db, cursor = db_connection()
+    #find corresponding essential name from its id, incident name from its id
+    incident_name = request.args.get('incident').title()
+    cursor.execute('select id from incident where name=%s', (incident_name,))
+    result=cursor.fetchone()
+    if result == None:
+        return 'Select an existing incident.'
+    cursor.execute('select eid, qty_donated from incident_resource_allocation where iid=%s', (result,))
+    result = cursor.fetchall()
+    if result == None:
+        return 'No resources allocated for this incident yet. Please consider donating.'
+    final = []
+    for i in result:
+        cursor.execute('select name from essential where id=%s', (i[0],))
+        e_name = cursor.fetchone()
+        final.append([incident_name, e_name[0], i[1]])
+    return render_template('view_resource.html', final=final)

@@ -109,6 +109,7 @@
                   <!-- <a href="/donate-funds" class="nav-item">Donate Funds</a> -->
                   <!-- <a href="/fund-alloc" class="nav-item">Fund Allocation</a> -->
                   <a href="/locality-search" class="nav-item">Locality Search</a>
+                  <a href="/donate-resource" class="nav-item">Donate Resource</a>
                 </div>
                 
                 <div class="incident-ticker">
@@ -140,25 +141,25 @@
                                 <div class="carousel-item active">
                                   <img src="../static/css/Flood.jpg" class="d-block w-100" alt="...">
                                     <div class="carousel-caption d-none d-md-block">
-                                        <h5>Flood</h5>
+                                        <h5></h5>
                                       </div>
                                 </div>
                                 <div class="carousel-item">
                                   <img src="../static/css/Earthquake.jpg" class="d-block w-100" alt="...">
                                     <div class="carousel-caption d-none d-md-block">
-                                        <h5>Earthquake</h5>
+                                        <h5></h5>
                                       </div>
                                 </div>
                                 <div class="carousel-item">
                                   <img src="../static/css/Tsunami.jpg" class="d-block w-100" alt="...">
                                     <div class="carousel-caption d-none d-md-block">
-                                        <h5>Tsunami</h5>
+                                        <h5></h5>
                                       </div>
                                 </div>
                                 <div class="carousel-item">
                                   <img src="../static/css/Covidd.jpeg" class="d-block w-100" alt="...">
                                     <div class="carousel-caption d-none d-md-block">
-                                        <h5>Covid</h5>
+                                        <h5></h5>
                                       </div>
                                 </div>
                               </div>
@@ -177,45 +178,7 @@
                   </div>
               </div>
           
-          
-          <div class="sectionLight">
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-12 col-lg-6 mb-4">
-                <a href="./flood_page.html" class="position-relative">
-                    <img class="img-fluid imgCenter" src="../static/css/floo.jpg" alt="Flood Image">
-                    <div class="caption">Flood Disaster</div>
-                </a>
-            </div>
-            <div class="col-sm-12 col-lg-6 mb-4">
-                <a href="./tsunami_page.html" class="position-relative">
-                    <img class="img-fluid imgCenter" src="../static/css/Tsunami.jpg" alt="Tsunami Image">
-                    <div class="caption">Tsunami Disaster</div>
-                </a>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="sectionLight">
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-12 col-lg-6 mb-4">
-                <a href="./earthquake_page.html" class="position-relative">
-                    <img class="img-fluid imgCenter" src="../static/css/earth.jpg" alt="Earthquake Image">
-                    <div class="caption">Earthquake Disaster</div>
-                </a>
-            </div>
-            <div class="col-sm-12 col-lg-6 mb-4">
-                <a href="./coronavirus_page.html" class="position-relative">
-                    <img class="img-fluid imgCenter" src="../static/css/corona.jpg" alt="Covid Image">
-                    <div class="caption">Covid Disaster</div>
-                </a>
-            </div>
-        </div>
-    </div>
-</div>
-          
+<!--        -->
           
           <div class="sectionDark">
             <div class="row">
@@ -243,7 +206,13 @@
               
               </div>
           
-          
+          <div>
+            <form action="/view-resource-allocations" method="GET">
+              <label for="incident">Enter an incident for which you want to see the resource allocations.</label>
+              <input type="text" name="incident" id="incident"/>
+              <button type="submit">Go.</button>
+            </form>
+          </div>
           
           <footer class="footer bg-inverse">
             <div class="container-fluid flex-wrap">

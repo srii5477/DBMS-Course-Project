@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/css/add_incident_style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400&family=PT+Serif:wght@400&display=swap" rel="stylesheet">
+    <title>Donate Resource</title>
+</head>
+<body>
+    <h2 style="text-align: center;">Donate resources.</h2>
+
+    <form action="/allocate-resource" method="POST">
+        <label for="incident_name">Incident name:</label>
+        <input type="text" id="incident_name" name="incident_name" required>
+        <br><br>
+        <p>List of essentials in our catalogue:</p>
+        {% for result in results %}
+            <p>{{result[0]}}</p>
+        {% endfor %}
+        <label for="essential_name">Essential name:</label>
+        <input type="text" id="essential_name" name="essential_name" required>
+        <br><br>
+
+        <label for="quantity">Quantity:</label>
+        <input type="number" id="quantity" name="quantity" required>
+        <br><br>
+
+
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>
