@@ -13,12 +13,11 @@ h2 {
 
 form {
     max-width: 400px; 
-    margin: 0 auto;
+    margin-left: 0 auto;
     padding: 20px; 
-    background-color: #ffffff;
-    border: 1px solid #cccccc; 
-    border-radius: 5px; 
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+    /* background-color: #ffffff;
+    border: 1px solid #cccccc;  */
+    border-radius: 5px;  
 }
 
 label {
@@ -33,10 +32,10 @@ label {
     padding-left: 20px;
 }
 
-.inner{
+/* .inner{
     background-color: #ffeecc;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
+} */
 
 input[type="text"] {
     width: 94%; 
@@ -51,7 +50,6 @@ button[type="submit"] {
     color: #ffffff;
     padding: 10px 20px; 
     border: none; 
-    border-radius: 5px;
     cursor: pointer; 
     width: 100%;
 }

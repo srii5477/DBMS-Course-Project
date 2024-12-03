@@ -7,7 +7,7 @@
     <title>Locality Search</title>
 </head>
 <body>
-    <h2>Search for Locality</h2>
+    <h2 style="color: brown">Search for Locality</h2>
     
     <form method="POST" action="/locality-search">
         <label for="locality_name">Enter Locality Name:</label>
@@ -54,7 +54,7 @@
             </div>
             <form method="PATCH" action="/update-shelter-capacity">
                 <input type="hidden" name="shelter_id" id="shelter_id" value="{{ locality[0] }}"/>
-                <button type="submit">Allocate yourself to this shelter.</button>
+                <button type="submit" style="background-color: brown;">Allocate yourself to this shelter.</button>
             </form>
             {% endfor %}
         {% elif not_found_message %}
